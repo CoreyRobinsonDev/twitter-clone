@@ -1,39 +1,40 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-import { Post as postType } from "../../util/types";
+import { RedditResponseObject, ProfilePic } from "../../util/types";
 import Post from "../post/Post";
 
 export default function Home() {
-  const [posts, setPosts] = useState<postType[]>([{
-    pfp: "",
-    name: "Bitter Bot",
-    username: "Bitter_Bot",
-    content: "Welcome to Bitter!",
-    numOfComments: 0,
-    numOfReposts: 0,
-    upvotes: 0,
-    downvotes: 0
-  }]);
+  const [data, setData] = useState<RedditResponseObject[]>();
+  const [profilePics, setProfilePics] = useState();
 
-  const getPosts = async () => {
+  const getPosts = () => {
     axios.get("https://www.reddit.com/r/all.json")
+    .then((res) => {
+      setData(res.data.data.children);
+    })
+    axios.get("https://api.unsplash.com/photos/random?collections=people&count=25&orientation=squarish&client_id=4xU23O7Cmjqzpu5erQiSwUTLzmq3F8_XtNXvqk0Y0xA")
       .then((res) => {
-        console.log(res.data.data.children);
-        const data = res.data.data.children;
-        
-      })
+      setProfilePics(res.data.map((photo: ProfilePic) => photo.urls.small))
+    })
   }
+  
   useEffect(() => {
     getPosts();
   }, [])
-  const arr = [
-    {},
-    {},
-    {},
-    {},
-    {}];
+  
   return <main>
-    {arr.map((item, key) => <Post key={key} />)}
+    {data?.map((item, key) => <Post
+      key={key}
+      pfp={profilePics ? profilePics[key] : ""}
+      name={item.data.author}
+      username={item.data.author}
+      title={item.data.title}
+      text={item.data.selftext}
+      media={item.data.url}
+      numOfComments={item.data.num_comments}
+      numOfReposts={item.data.num_crossposts}
+      upvotes={item.data.ups}
+      downvotes={item.data.downs} />)}
   </main>
 }
