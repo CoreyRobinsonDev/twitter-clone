@@ -23,7 +23,7 @@ export default function Home() {
     getPosts();
   }, [])
   
-  return <main>
+  return <section>
     {data?.map((item, key) => <Post
       key={key}
       pfp={profilePics ? profilePics[key] : ""}
@@ -36,5 +36,5 @@ export default function Home() {
       numOfReposts={item.data.num_crossposts}
       upvotes={item.data.ups}
       downvotes={item.data.downs} />)}
-  </main>
+  </section>
 }

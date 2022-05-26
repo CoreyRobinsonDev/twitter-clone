@@ -1,4 +1,6 @@
 
 export default function Bookmarks() {
-  return <>Bookmarks</>
+  return <section>
+    
+  </section>
 }

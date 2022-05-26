@@ -1,5 +1,6 @@
 import { BiMessage, BiUpvote, BiDownvote } from 'react-icons/bi';
 import { AiOutlineRetweet } from 'react-icons/ai';
+import { RiBookmarkLine } from 'react-icons/ri';
 
 import { Post as postType } from '../../util/types';
 
@@ -32,6 +33,7 @@ export default function Post({ pfp, name, username, title, text, media, numOfCom
         <button><AiOutlineRetweet />{numOfReposts}</button>
         <button><BiUpvote />{upvotes}</button>
         <button><BiDownvote />{downvotes}</button>
+        <button><RiBookmarkLine></RiBookmarkLine></button>
       </div>
     </div>
   </article>

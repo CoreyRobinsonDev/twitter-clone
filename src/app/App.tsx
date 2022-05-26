@@ -13,17 +13,19 @@ import ErrorPage from '../components/error-page/ErrorPage';
 function App() {
   return <Router>
     <h1>Bitter</h1>
-    <NavBar />    
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/explore" element={<Explore />} />
-      <Route path="/notifications" element={<Notifs />} />
-      <Route path="/messages" element={<Messages />} />
-      <Route path="/bookmarks" element={<Bookmarks />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/settings" element={<Settings />} />
-      <Route path="*" element={<ErrorPage />} />
-    </Routes>
+    <NavBar />
+    <main>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/notifications" element={<Notifs />} />
+        <Route path="/messages" element={<Messages />} />
+        <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </main>
   </Router>    
 }
 
