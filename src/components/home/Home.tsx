@@ -1,22 +1,19 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-import { RedditResponseObject, ProfilePic } from "../../util/types";
+import { Post_db } from "../../util/types";
 import Post from "../post/Post";
 
 export default function Home() {
-  const [data, setData] = useState<RedditResponseObject[]>();
-  const [profilePics, setProfilePics] = useState();
+  const [postData, setPostData] = useState<null | Post_db[] >(null);
 
   const getPosts = () => {
-    axios.get("https://www.reddit.com/r/all.json")
-    .then((res) => {
-      setData(res.data.data.children);
-    })
-    axios.get("https://api.unsplash.com/photos/random?collections=people&count=25&orientation=squarish&client_id=4xU23O7Cmjqzpu5erQiSwUTLzmq3F8_XtNXvqk0Y0xA")
-      .then((res) => {
-      setProfilePics(res.data.map((photo: ProfilePic) => photo.urls.small))
-    })
+    axios
+      .get("http://localhost:4001/")
+      .then((response) => {
+        setPostData(response.data);
+      })
+      .catch((error) => console.error(error))
   }
   
   useEffect(() => {
@@ -24,17 +21,16 @@ export default function Home() {
   }, [])
   
   return <section>
-    {data?.map((item, key) => <Post
-      key={key}
-      pfp={profilePics ? profilePics[key] : ""}
-      name={item.data.author}
-      username={item.data.author}
-      title={item.data.title}
-      text={item.data.selftext}
-      media={item.data.url}
-      numOfComments={item.data.num_comments}
-      numOfReposts={item.data.num_crossposts}
-      upvotes={item.data.ups}
-      downvotes={item.data.downs} />)}
+    {postData?.map((data) => <Post
+      username={data.username}
+      pfp={data.profile_photo}
+      text={data.text}
+      media={data.media}
+      numOfComments={data.num_comments}
+      numOfReposts={data.num_reposts}
+      upvotes={data.num_upvotes}
+      downvotes={data.num_downvotes}
+      timestamp={data.date_post_created}
+    />)}
   </section>
 }
