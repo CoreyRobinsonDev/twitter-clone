@@ -8,7 +8,7 @@ import { isURL, isGif, isImage } from '../../util/helper';
 
 export default function Post({ pfp, username, text, media, numOfComments, numOfReposts, upvotes, downvotes, timestamp }: postType) {
   const currentTime = Math.round(new Date().getTime() / 1000);
-  const timeDif = Math.round(((currentTime - timestamp) / 60) / 60);
+  const postAge = Math.round(((currentTime - timestamp) / 60) / 60);
     
 
   return <article>
@@ -16,7 +16,7 @@ export default function Post({ pfp, username, text, media, numOfComments, numOfR
     <div>
       <div>
         <span>@{username}</span>
-        <span>{timeDif}h</span>
+        <span>{postAge}h</span>
       </div>
       <p>{text}</p>
       <img src={media} alt=""></img>
