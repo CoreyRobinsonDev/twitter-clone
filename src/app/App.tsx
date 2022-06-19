@@ -13,8 +13,8 @@ import Bookmarks from '../components/pages/bookmarks/Bookmarks';
 import Profile from '../components/pages/profile/Profile';
 import Settings from '../components/pages/settings/Settings';
 import ErrorPage from '../components/pages/error-page/ErrorPage';
-import Login from '../components/pages/sign-in/log-in/Login';
-import Register from '../components/pages/sign-in/register/Register';
+import Login from '../components/pages/log-in/Login';
+import Register from '../components/pages/register/Register';
 
 
 function App() {

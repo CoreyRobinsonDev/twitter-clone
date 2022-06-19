@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import React, {useState} from "react";
 
 const Login = () => {
   const [username, setUsername] = useState<null | string>(null);
   const [password, setPassword] = useState<null | string>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (e :React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,7 +17,8 @@ const Login = () => {
       },
       withCredentials: true,
       url: "http://localhost:4001/login"
-    }).then((res) => console.log(res))
+    }).then((res) => navigate("../"))
+    .catch((err) => navigate("*"))
   }
 
   return <section>
