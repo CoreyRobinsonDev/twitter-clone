@@ -1,7 +1,16 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Props } from "../../../util/types";
+
 import { BiMessageSquareDetail } from 'react-icons/bi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
-export default function Notifs() {
+const Notifs: React.FC<Props> = ({user}) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate("../login");
+  }, [user, navigate])
   return <section>
     <div>
       <span><BsFillPersonFill></BsFillPersonFill></span>
@@ -15,3 +24,5 @@ export default function Notifs() {
     </div>
   </section>
 }
+
+export default Notifs;

@@ -22,3 +22,20 @@ export type Post_db = {
   num_downvotes: number,
   num_reposts: number
 }
+
+export type User = {
+  banner_photo: string | null,
+  bio: string | null,
+  date_acc_created: string,
+  id: number,
+  num_followers: number,
+  num_following: number,
+  num_tweets: number,
+  password: string,
+  profile_photo: string | null,
+  username: string
+}
+
+export type Props = {
+  user: User | null
+}

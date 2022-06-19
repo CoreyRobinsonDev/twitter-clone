@@ -2,12 +2,18 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 
-import { Post_db } from "../../../util/types";
+import { Post_db, Props } from "../../../util/types";
 import Post from "../../post/Post";
 
-export default function Home() {
+
+const Home:React.FC<Props> = ({user}) => {
   const [postData, setPostData] = useState<null | Post_db[]>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate("../login");
+  }, [user, navigate])
+
 
   useEffect(() => {
     Axios({
@@ -20,13 +26,15 @@ export default function Home() {
         console.error(error);
       })
     
+
     Axios({
       method: "GET",
       withCredentials: true,
       url: "http://localhost:4001/user"
     }).then((response) => console.log(response.data))
-
   }, [navigate])
+
+  
   
   return <section>
     {postData
@@ -46,3 +54,5 @@ export default function Home() {
   }
   </section>
 }
+
+export default Home;

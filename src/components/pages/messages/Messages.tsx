@@ -1,5 +1,13 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Props } from "../../../util/types";
 
-export default function Messages() {
+const Messages: React.FC<Props> = ({user}) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate("../login");
+  }, [user, navigate])
   return <section>
     <div>
       <input />
@@ -25,3 +33,4 @@ export default function Messages() {
     </div>
   </section>
 }
+export default Messages;
