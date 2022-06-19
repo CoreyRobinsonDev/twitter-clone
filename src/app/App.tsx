@@ -1,9 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../util/hooks';
 import  Axios  from 'axios';
 
 import './App.css';
-import { User } from '../util/types';
+import { setUser } from './features/userSlice';
 import NavBar from '../components/navbar/NavBar';
 import Home from '../components/pages/home/Home';
 import Explore from '../components/pages/explore/Explore';
@@ -17,18 +18,20 @@ import Login from '../components/pages/log-in/Login';
 import Register from '../components/pages/register/Register';
 
 
+
 function App() {
-  const [user, setUser] = useState<null | User >(null);
-  
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.user.user);
+  const navigate = useNavigate();
+
   useEffect(() => {
     Axios({
       method: "GET",
       withCredentials: true,
       url: "http://localhost:4001/user"
-    }).then((response) => {
-      setUser(response.data);
-    })
-  }, [])
+    }).then((response) => dispatch(setUser(response.data)))
+    .catch((err) => navigate("*"))
+  }, [dispatch, user, navigate])
   
 
   return <>
