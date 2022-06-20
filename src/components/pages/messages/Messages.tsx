@@ -1,11 +1,7 @@
-import { Navigate } from "react-router-dom";
-import { useAppSelector } from "../../../util/hooks";
 
 const Messages = () => {
-  const user = useAppSelector(state => state.user.user); 
 
   return <section>
-  {!user && <Navigate to="/login" />}
     <div>
       <input />
       <ul>

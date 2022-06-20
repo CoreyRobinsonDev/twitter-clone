@@ -1,14 +1,10 @@
-import { Navigate } from "react-router-dom";
-import { useAppSelector } from "../../../util/hooks";
 
 import { BiMessageSquareDetail } from 'react-icons/bi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
 const Notifs = () => {
-  const user = useAppSelector(state => state.user.user); 
 
   return <section>
-  {!user && <Navigate to="/login" />}
     <div>
       <span><BsFillPersonFill></BsFillPersonFill></span>
       <img src="https://source.unsplash.com/random" alt="" />

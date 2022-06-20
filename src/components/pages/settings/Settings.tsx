@@ -1,11 +1,28 @@
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-import { Navigate } from "react-router-dom";
-import { useAppSelector } from "../../../util/hooks";
+import { useAppDispatch } from "../../../util/hooks";
+import { setUser } from "../../../app/features/userSlice";
+
 const Settings = () => {
-  const user = useAppSelector(state => state.user.user); 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  return <>
-  {!user && <Navigate to="/login" />}
-  </>
+  const logout = () => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      url: "http://localhost:4001/logout"
+    }).then((res) => {
+      dispatch(setUser(null));
+      navigate("/");
+    })
+  }
+
+  return <section>
+    <ul>
+      <li><button onClick={logout}>Log Out</button></li>
+    </ul>
+  </section>
 }
 export default Settings;

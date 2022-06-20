@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 
-import { useAppDispatch, useAppSelector } from "../../../util/hooks";
+import { useAppDispatch } from "../../../util/hooks";
 import { setError } from "../../../app/features/errorSlice";
 import { Post_db } from "../../../util/types";
 import Post from "../../post/Post";
@@ -11,7 +11,6 @@ import Input from "../../input/Input";
 
 const Home = () => {
   const [postData, setPostData] = useState<null | Post_db[]>(null);
-  const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -31,10 +30,9 @@ const Home = () => {
 
   
   return <section>
-    {!user && <Navigate to="/login" />}
     <Input />
     {postData
-      ? postData?.map((data, key) => <Post
+      && postData?.map((data, key) => <Post
       key={key}
       username={data.username}
       pfp={data.profile_photo}
@@ -46,7 +44,6 @@ const Home = () => {
       downvotes={data.num_downvotes}
       timestamp={data.date_post_created}
     />)
-      : ""
   }
   </section>
 }
