@@ -5,6 +5,7 @@ import  Axios  from 'axios';
 
 import './App.css';
 import { setUser } from './features/userSlice';
+import { setError } from './features/errorSlice';
 import NavBar from '../components/navbar/NavBar';
 import Home from '../components/pages/home/Home';
 import Explore from '../components/pages/explore/Explore';
@@ -21,19 +22,21 @@ import Register from '../components/pages/register/Register';
 
 function App() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
+  const user = useAppSelector(state => state.user.user);
 
   useEffect(() => {
     Axios({
       method: "GET",
       withCredentials: true,
       url: "http://localhost:4001/user"
-    }).then((response) => dispatch(setUser(response.data)))
-    .catch((err) => navigate("*"))
-  }, [dispatch, user, navigate])
+    }).then((res) => dispatch(setUser(res.data)))
+      .catch((err) => {
+        dispatch(setError(err.response.data))
+        navigate("*")
+      })
+  }, [dispatch, navigate])
   
-
   return <>
     <header>        
       <h1>Bitter</h1>
@@ -41,15 +44,18 @@ function App() {
     </header>
     <main>
       <Routes>
-        <Route path="/" element={<Home user={user} />} />
-        <Route path="/explore" element={<Explore user={user} />} />
-        <Route path="/notifications" element={<Notifs user={user}/>} />
-        <Route path="/messages" element={<Messages user={user}/>} />
-        <Route path="/bookmarks" element={<Bookmarks user={user}/>} />
-        <Route path="/profile" element={<Profile user={user}/>} />
-        <Route path="/settings" element={<Settings user={user}/>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {user && <>
+            <Route path="/home" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/notifications" element={<Notifs />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />   
+          </>
+        }
+        <Route path="/register" element={<Register />} />   
+        <Route path="/" element={<Login />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </main>

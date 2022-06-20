@@ -1,15 +1,10 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Props } from "../../../util/types";
 
-const Bookmarks: React.FC<Props> = ({ user }) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) navigate("../login");
-  }, [user, navigate])
+import { Navigate } from "react-router-dom";
+import { useAppSelector } from "../../../util/hooks";
+const Bookmarks = () => {
+  const user = useAppSelector(state => state.user.user);
   return <section>
-    
+    {!user && <Navigate to="/login" />}
   </section>
 }
 

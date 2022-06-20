@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Props } from "../../../util/types";
 
-const Settings: React.FC<Props> = ({user}) => {
-  const navigate = useNavigate();
+import { Navigate } from "react-router-dom";
+import { useAppSelector } from "../../../util/hooks";
+const Settings = () => {
+  const user = useAppSelector(state => state.user.user); 
 
-  useEffect(() => {
-    if (!user) navigate("../login");
-  }, [user, navigate])
-  return <>Settings</>
+  return <>
+  {!user && <Navigate to="/login" />}
+  </>
 }
 export default Settings;

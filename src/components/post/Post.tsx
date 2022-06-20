@@ -1,10 +1,8 @@
 import { BiMessage, BiUpvote, BiDownvote } from 'react-icons/bi';
 import { AiOutlineRetweet } from 'react-icons/ai';
 import { RiBookmarkLine } from 'react-icons/ri';
-import { useState, useEffect } from "react";
 
 import { Post as postType } from '../../util/types';
-import { isURL, isGif, isImage } from '../../util/helper';
 
 export default function Post({ pfp, username, text, media, numOfComments, numOfReposts, upvotes, downvotes, timestamp }: postType) {
   const currentTime = Math.round(new Date().getTime() / 1000);

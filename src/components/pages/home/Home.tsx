@@ -1,42 +1,38 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Axios from "axios";
 
-import { Post_db, Props } from "../../../util/types";
+import { useAppDispatch, useAppSelector } from "../../../util/hooks";
+import { setError } from "../../../app/features/errorSlice";
+import { Post_db } from "../../../util/types";
 import Post from "../../post/Post";
+import Input from "../../input/Input";
 
 
-const Home:React.FC<Props> = ({user}) => {
+const Home = () => {
   const [postData, setPostData] = useState<null | Post_db[]>(null);
+  const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) navigate("../login");
-  }, [user, navigate])
+  const dispatch = useAppDispatch();
 
 
   useEffect(() => {
     Axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:4001/"})
+      url: "http://localhost:4001/"
+    })
       .then((res) => setPostData(res.data))
-      .catch((error) => {
-        navigate("*");
-        console.error(error);
+      .catch((err) => {
+        dispatch(setError(err.response.data))
+        navigate("*")
       })
-    
+  }, [navigate, dispatch])
 
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:4001/user"
-    }).then((response) => console.log(response.data))
-  }, [navigate])
-
-  
   
   return <section>
+    {!user && <Navigate to="/login" />}
+    <Input />
     {postData
       ? postData?.map((data, key) => <Post
       key={key}

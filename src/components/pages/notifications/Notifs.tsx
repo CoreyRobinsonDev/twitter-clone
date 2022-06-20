@@ -1,17 +1,14 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Props } from "../../../util/types";
+import { Navigate } from "react-router-dom";
+import { useAppSelector } from "../../../util/hooks";
 
 import { BiMessageSquareDetail } from 'react-icons/bi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
-const Notifs: React.FC<Props> = ({user}) => {
-  const navigate = useNavigate();
+const Notifs = () => {
+  const user = useAppSelector(state => state.user.user); 
 
-  useEffect(() => {
-    if (!user) navigate("../login");
-  }, [user, navigate])
   return <section>
+  {!user && <Navigate to="/login" />}
     <div>
       <span><BsFillPersonFill></BsFillPersonFill></span>
       <img src="https://source.unsplash.com/random" alt="" />

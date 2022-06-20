@@ -1,14 +1,11 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Props } from "../../../util/types";
+import { Navigate } from "react-router-dom";
+import { useAppSelector } from "../../../util/hooks";
 
-const Messages: React.FC<Props> = ({user}) => {
-  const navigate = useNavigate();
+const Messages = () => {
+  const user = useAppSelector(state => state.user.user); 
 
-  useEffect(() => {
-    if (!user) navigate("../login");
-  }, [user, navigate])
   return <section>
+  {!user && <Navigate to="/login" />}
     <div>
       <input />
       <ul>
