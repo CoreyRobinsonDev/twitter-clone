@@ -12,10 +12,12 @@ export type Post = {
 }
 
 export type Post_db = {
+  id: number,
   username: string,
   profile_photo: string,
   text: string,
   media: string,
+  media_content_type: string,
   date_post_created: number,
   num_comments: number,
   num_upvotes: number,
@@ -24,7 +26,7 @@ export type Post_db = {
 }
 
 export type User = {
-  banner_photo: string | null,
+  banner_photo: string,
   bio: string | null,
   date_acc_created: string,
   id: number,
@@ -32,7 +34,7 @@ export type User = {
   num_following: number,
   num_tweets: number,
   password: string,
-  profile_photo: string | null,
+  profile_photo: string,
   username: string
 }
 

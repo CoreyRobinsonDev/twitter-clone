@@ -22,7 +22,7 @@ const Register = () => {
       },
       withCredentials: true,
       url: "http://localhost:4001/register"
-    }).then((res) => navigate("/login"))
+    }).then((res) => navigate("/"))
       .catch((err) => {
       setAlert(err.response.data);
     })

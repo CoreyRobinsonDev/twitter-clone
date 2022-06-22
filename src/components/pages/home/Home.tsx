@@ -24,26 +24,26 @@ const Home = () => {
       .then((res) => setPostData(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data))
-        navigate("*")
+        navigate("../*")
       })
-  }, [navigate, dispatch])
-
-  
+    }, [navigate, dispatch])
+    
+    console.log(postData)
   return <section>
     <Input />
     {postData
-      && postData?.map((data, key) => <Post
-      key={key}
-      username={data.username}
-      pfp={data.profile_photo}
-      text={data.text}
-      media={data.media}
-      numOfComments={data.num_comments}
-      numOfReposts={data.num_reposts}
-      upvotes={data.num_upvotes}
-      downvotes={data.num_downvotes}
-      timestamp={data.date_post_created}
-    />)
+      && postData?.map((data) => <Post
+          key={data.id}
+          username={data.username}
+          pfp={data.profile_photo}
+          text={data.text}
+          media={data.media}
+          numOfComments={data.num_comments}
+          numOfReposts={data.num_reposts}
+          upvotes={data.num_upvotes}
+          downvotes={data.num_downvotes}
+          timestamp={data.date_post_created}
+        />)
   }
   </section>
 }

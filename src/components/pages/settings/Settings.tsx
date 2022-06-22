@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch } from "../../../util/hooks";
 import { setUser } from "../../../app/features/userSlice";
+import { setError } from "../../../app/features/errorSlice";
 
 const Settings = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +17,9 @@ const Settings = () => {
     }).then((res) => {
       dispatch(setUser(null));
       navigate("/");
+    }).catch((err) => {
+      dispatch(setError(err.response.data));
+      navigate("*");
     })
   }
 
