@@ -16,13 +16,14 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         username,
         password
       },
-      withCredentials: true,
       url: "http://localhost:4001/login"})
     .then((res) => {
       dispatch(setUser(res.data));

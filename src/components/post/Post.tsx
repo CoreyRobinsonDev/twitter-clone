@@ -3,6 +3,7 @@ import { AiOutlineRetweet } from 'react-icons/ai';
 import { RiBookmarkLine } from 'react-icons/ri';
 
 import { Post as postType } from '../../util/types';
+import { isVideo } from '../../util/helper';
 
 export default function Post({ pfp, username, text, media, numOfComments, numOfReposts, upvotes, downvotes, timestamp }: postType) {
   const currentTime = Math.round(new Date().getTime() / 1000);
@@ -17,7 +18,11 @@ export default function Post({ pfp, username, text, media, numOfComments, numOfR
         <span>{postAge}h</span>
       </div>
       <p>{text}</p>
-      <img src={media} alt=""></img>
+      {
+        isVideo(media)
+          ? <video controls autoPlay muted><source src={media}></source></video>
+          : <img src={media} alt=""></img>
+      }
       <div>
         <button><BiMessage />{numOfComments}</button>
         <button><AiOutlineRetweet />{numOfReposts}</button>

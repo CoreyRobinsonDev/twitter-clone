@@ -23,9 +23,13 @@ const Input = () => {
     data.append("date", date);
     data.append("poster_id", posterId);
     data.append("file", file);
-    console.log(text)
 
-    Axios.post("http://localhost:4001/post", data)
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data,
+      url: "http://localhost:4001/post"
+    })
       .catch((err) => {
         dispatch(setError(err.response.data));
         navigate("*");
