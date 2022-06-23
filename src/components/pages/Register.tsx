@@ -1,7 +1,7 @@
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import Axios from "axios";
 import React, {useState} from "react";
-import { useAppSelector } from "../../../util/hooks";
+import { useAppSelector } from "../../util/hooks";
 
 const Register = () => {
   const [username, setUsername] = useState<null | string>(null);

@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 
-import { useAppDispatch } from "../../../util/hooks";
-import { setError } from "../../../app/features/errorSlice";
-import { Post_db } from "../../../util/types";
-import Post from "../../post/Post";
-import Input from "../../input/Input";
+import { useAppDispatch } from "../../util/hooks";
+import { setUser } from "../../app/features/userSlice";
+import { setError } from "../../app/features/errorSlice";
+import { Post_db } from "../../util/types";
+import Post from "../Post";
+import CreatePost from "../CreatePost";
 
 
 const Home = () => {
@@ -14,6 +15,18 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+
+  useEffect(() => {
+    Axios({
+      method: "GET",
+      withCredentials: true,
+      url: "http://localhost:4001/user"
+    }).then((res) => dispatch(setUser(res.data)))
+      .catch((err) => {
+        dispatch(setError(err.response.data))
+        navigate("*")
+      })
+  }, [dispatch, navigate])
 
   useEffect(() => {
     Axios({
@@ -30,10 +43,11 @@ const Home = () => {
     
     console.log(postData)
   return <section>
-    <Input />
+    <CreatePost />
     {postData
       && postData?.map((data) => <Post
           key={data.id}
+          id={data.id}
           username={data.username}
           pfp={data.profile_photo}
           text={data.text}
@@ -44,7 +58,7 @@ const Home = () => {
           downvotes={data.num_downvotes}
           timestamp={data.date_post_created}
         />)
-  }
+    }
   </section>
 }
 

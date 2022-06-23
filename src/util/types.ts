@@ -1,5 +1,6 @@
 
 export type Post = {
+  id: number,
   pfp: string,
   username: string,
   text: string,
@@ -23,6 +24,25 @@ export type Post_db = {
   num_upvotes: number,
   num_downvotes: number,
   num_reposts: number
+}
+
+export type PostPage = {
+  post: {
+    id: number,
+    post_id: number,
+    text: string,
+    media: string,
+    media_content_type: string,
+    date_post_created: number,
+    num_comments: number,
+    num_reposts: number,
+    num_downvotes: number,
+    num_upvotes: number
+  },
+  user: {
+    username: string,
+    profile_photo: string
+  }
 }
 
 export type User = {

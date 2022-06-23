@@ -1,9 +1,9 @@
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import { useAppDispatch } from "../../../util/hooks";
-import { setUser } from "../../../app/features/userSlice";
-import { setError } from "../../../app/features/errorSlice";
+import { useAppDispatch } from "../../util/hooks";
+import { setUser } from "../../app/features/userSlice";
+import { setError } from "../../app/features/errorSlice";
 
 const Settings = () => {
   const dispatch = useAppDispatch();

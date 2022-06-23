@@ -2,10 +2,10 @@ import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {useState} from "react";
 
-import { useAppDispatch, useAppSelector } from "../../util/hooks";
-import { setError } from "../../app/features/errorSlice";
+import { useAppDispatch, useAppSelector } from "../util/hooks";
+import { setError } from "../app/features/errorSlice";
 
-const Input = () => {
+const CreatePost = () => {
   const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -48,4 +48,4 @@ const Input = () => {
   </div>
 }
 
-export default Input;
+export default CreatePost;

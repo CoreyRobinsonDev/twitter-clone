@@ -2,8 +2,8 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import Axios from "axios";
 import React, { useState } from "react";
 
-import { setUser } from "../../../app/features/userSlice";
-import { useAppDispatch, useAppSelector } from "../../../util/hooks";
+import { setUser } from "../../app/features/userSlice";
+import { useAppDispatch, useAppSelector } from "../../util/hooks";
 
 
 const Login = () => {
@@ -30,7 +30,7 @@ const Login = () => {
       navigate("/home");
     })
     .catch((err) => {
-      setAlert(err.response.data);     
+      setAlert("Incorrect Username/Password");  
     })
   }
 
