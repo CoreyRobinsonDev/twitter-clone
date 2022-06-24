@@ -1,37 +1,59 @@
-import { BiUpvote, BiDownvote } from 'react-icons/bi';
-import { AiOutlineRetweet } from 'react-icons/ai';
+import { BiUpvote, BiDownvote } from "react-icons/bi";
+import { AiOutlineRetweet } from "react-icons/ai";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import { isVideo } from "../../util/helper";
+import { useAppDispatch, useAppSelector } from "../../util/hooks";
+import { setError } from "../../app/features/errorSlice";
+import { User } from "../../util/types";
 
 type Props = {
-  id: number,
-  poster_id: number,
-  text: string,
-  media: string,
-  num_upvotes: number,
-  num_downvotes: number,
-  num_reposts: number
+  num: number
 }
 
-const Comment: React.FC<Props> = ({id, poster_id, text, media, num_upvotes, num_downvotes, num_reposts}) => {
+const Comment: React.FC<Props> = ({ num }) => {
+  const [data, setData] = useState<User | null>(null);
+  const comments = useAppSelector(state => state.comment.comments);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const comment = comments?.[num];
+  
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: {user_id: comment?.poster_id},
+      url: "http://localhost:4001/user/getUserData"
+    }).then((res) => setData(res.data))
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  }, [dispatch, navigate, comment])
+
+
+
   return <div>
-    <img src={""} alt="Profile" />
+    <img src={data?.profile_photo} alt="Profile" />
     <div>
-      <span>@username</span>
+      <span>@{data?.username}</span>
     </div>
     <div>
-      <p>{text}</p>
+      <p>{comment?.text}</p>
       <figure>
         {
-          isVideo(media)
-            ? <video controls autoPlay muted><source src={media}></source></video>
-            : <img src={media} alt="" />
+          isVideo(comment?.media)
+            ? <video controls autoPlay muted><source src={comment?.media}></source></video>
+            : <img src={comment?.media} alt="" />
         }
       </figure>
     </div>
     <div>
-      <button><AiOutlineRetweet />{num_reposts}</button>
-      <button><BiUpvote />{num_upvotes}</button>
-      <button><BiDownvote />{num_downvotes}</button>
+      <button><AiOutlineRetweet />{comment?.num_reposts}</button>
+      <button><BiUpvote />{comment?.num_upvotes}</button>
+      <button><BiDownvote />{comment?.num_downvotes}</button>
     </div>
   </div>
 }

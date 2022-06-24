@@ -4,16 +4,16 @@ import Axios from "axios";
 
 import { useAppDispatch } from "../../util/hooks";
 import { setError } from "../../app/features/errorSlice";
-import { Post_db } from "../../util/types";
+import { setPosts } from "../../app/features/postSlice";
 import Post from "../post/Post";
 import CreatePost from "../post/CreatePost";
 
 
 const Home = () => {
-  const [postData, setPostData] = useState<null | Post_db[]>(null);
+  const [numOfPosts, setNumOfPosts] = useState(0);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const posts = [];
 
 
   useEffect(() => {
@@ -22,31 +22,24 @@ const Home = () => {
       withCredentials: true,
       url: "http://localhost:4001/"
     })
-      .then((res) => setPostData(res.data))
+      .then((res) => {
+        setNumOfPosts(res.data.length);
+        dispatch(setPosts(res.data))
+      })
       .catch((err) => {
         dispatch(setError(err.response.data))
         navigate("../*")
       })
     }, [navigate, dispatch])
     
-    console.log(postData)
+  for (let i = 0; i < numOfPosts; i++) {
+    posts.push(<Post key={i} num={i} />)
+  }
+    
+
   return <section>
     <CreatePost />
-    {postData
-      && postData?.map((data) => <Post
-          key={data.id}
-          id={data.id}
-          username={data.username}
-          pfp={data.profile_photo}
-          text={data.text}
-          media={data.media}
-          numOfComments={data.num_comments}
-          numOfReposts={data.num_reposts}
-          upvotes={data.num_upvotes}
-          downvotes={data.num_downvotes}
-          timestamp={data.date_post_created}
-        />)
-    }
+    {posts}
   </section>
 }
 

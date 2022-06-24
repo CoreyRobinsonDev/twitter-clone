@@ -27,7 +27,7 @@ const CreateComment = () => {
       method: "POST",
       withCredentials: true,
       data,
-      url: "http://localhost:4001/post/comment"
+      url: "http://localhost:4001/comment"
     })
       .catch((err) => {
         dispatch(setError(err.response.data));

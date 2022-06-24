@@ -1,15 +1,15 @@
 
 export type Post = {
   id: number,
-  pfp: string,
-  username: string,
+  poster_id: number,
   text: string,
   media: string,
-  timestamp: number,
-  numOfComments: number,
-  numOfReposts: number,
-  upvotes: number,
-  downvotes: number
+  media_content_type: string,
+  date_post_created: number,
+  num_comments: number,
+  num_reposts: number,
+  num_upvotes: number,
+  num_downvotes: number
 }
 
 export type Post_db = {
