@@ -7,6 +7,8 @@ import Axios from "axios";
 
 import { PostPage as postType } from "../../util/types";
 import { isVideo } from "../../util/helper";
+import CreateComment from "../comment/CreateComment";
+import CommentSection from "../comment/CommentSection";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -23,7 +25,7 @@ const PostPage = () => {
       data: {
         id: postId
       },
-      url: "http://localhost:4001/post/getData"
+      url: "http://localhost:4001/post/getPostData"
     })
     .then((res) => setData(res.data))
   }, [postId])
@@ -46,7 +48,6 @@ const PostPage = () => {
         </figure>
       </div>
       <ul>
-       <li>{data?.post.num_comments} Comments</li> 
        <li>{data?.post.num_reposts} Reposts</li> 
        <li>{data?.post.num_upvotes} Upvotes</li> 
        <li>{data?.post.num_downvotes} Downvotes</li> 
@@ -58,6 +59,8 @@ const PostPage = () => {
         <button><RiBookmarkLine></RiBookmarkLine></button>
       </div>
     </div>
+    <CreateComment />
+    <CommentSection />
   </section>
 }
 

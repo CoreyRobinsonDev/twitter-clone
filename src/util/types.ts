@@ -45,6 +45,16 @@ export type PostPage = {
   }
 }
 
+export type Comment = {
+  id: number,
+  poster_id: number,
+  text: string,
+  media: string,
+  num_upvotes: number,
+  num_downvotes: number,
+  num_reposts: number
+}
+
 export type User = {
   banner_photo: string,
   bio: string | null,

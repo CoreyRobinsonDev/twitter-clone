@@ -1,7 +1,11 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../util/hooks';
+import { useEffect } from 'react';
+import Axios from 'axios';
 
 import './App.css';
+import { setUser } from './features/userSlice';
+import { setError } from './features/errorSlice';
 import NavBar from '../components/NavBar';
 import Home from '../components/pages/Home';
 import Explore from '../components/pages/Explore';
@@ -18,6 +22,21 @@ import PostPage from '../components/pages/PostPage';
 
 function App() {
   const user = useAppSelector(state => state.user.user);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  
+  useEffect(() => {
+    Axios({
+      method: "GET",
+      withCredentials: true,
+      url: "http://localhost:4001/user"
+    }).then((res) => dispatch(setUser(res.data)))
+      .catch((err) => {
+        dispatch(setError(err.response.data))
+        navigate("*")
+      })
+  }, [dispatch, navigate])
 
   
   return <>

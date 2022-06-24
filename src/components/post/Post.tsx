@@ -1,10 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { BiMessage, BiUpvote, BiDownvote } from 'react-icons/bi';
 import { AiOutlineRetweet } from 'react-icons/ai';
 import { RiBookmarkLine } from 'react-icons/ri';
-import { useNavigate } from "react-router-dom";
 
-import { Post as postType } from '../util/types';
-import { isVideo } from '../util/helper';
+import { Post as postType } from '../../util/types';
+import { isVideo } from '../../util/helper';
 
 export default function Post({ id, pfp, username, text, media, numOfComments, numOfReposts, upvotes, downvotes, timestamp }: postType) {
   const navigate = useNavigate();
