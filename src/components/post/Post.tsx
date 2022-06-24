@@ -2,21 +2,47 @@ import { useNavigate } from "react-router-dom";
 import { BiMessage, BiUpvote, BiDownvote } from "react-icons/bi";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { RiBookmarkLine } from "react-icons/ri";
+import Axios from "axios";
 
 import { isVideo } from "../../util/helper";
-import { useAppSelector } from "../../util/hooks";
+import { useAppDispatch, useAppSelector } from "../../util/hooks";
+import { setError } from "../../app/features/errorSlice";
+import { addUpvote, removeUpvote } from "../../app/features/postSlice";
 
 type Props = {
   num: number
 }
 
+
 const Post:React.FC<Props> = ({ num }) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.user.user);
   const posts = useAppSelector(state => state.post.posts);
   const post = posts?.[num];
   const currentTime = Math.round(new Date().getTime() / 1000);
   const postAgeInHours = Math.round(((currentTime - (post?.date_post_created ? post?.date_post_created : 0)) / 60) / 60);
-  
+
+  const upvote = () => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: {
+        user_id: user?.id,
+        post_id: post?.id
+      },
+      url: "http://localhost:4001/post/upvote"
+    }).then((res) => {
+      // true when an upvote is added
+      // false when am upvote is removed
+      res.data ? dispatch(addUpvote(num)) : dispatch(removeUpvote(num))
+    })
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  }
+
 
   return <article>
     <img src={post?.profile_photo} alt="Profile" height="100" />
@@ -36,9 +62,9 @@ const Post:React.FC<Props> = ({ num }) => {
         </figure>
       </div>
       <div>
-        <button><BiMessage />{post?.num_comments}</button>
+        <button onClick={() => navigate(`/post/${post?.id}`)}><BiMessage />{post?.num_comments}</button>
         <button><AiOutlineRetweet />{post?.num_reposts}</button>
-        <button><BiUpvote />{post?.num_upvotes}</button>
+        <button onClick={upvote}><BiUpvote />{post?.num_upvotes}</button>
         <button><BiDownvote />{post?.num_downvotes}</button>
         <button><RiBookmarkLine></RiBookmarkLine></button>
       </div>
