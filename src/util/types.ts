@@ -26,24 +26,7 @@ export type Post_db = {
   num_reposts: number
 }
 
-export type PostPage = {
-  post: {
-    id: number,
-    post_id: number,
-    text: string,
-    media: string,
-    media_content_type: string,
-    date_post_created: number,
-    num_comments: number,
-    num_reposts: number,
-    num_downvotes: number,
-    num_upvotes: number
-  },
-  user: {
-    username: string,
-    profile_photo: string
-  }
-}
+
 
 export type Comment = {
   id: number,
