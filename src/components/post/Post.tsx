@@ -10,31 +10,32 @@ import { setError } from "../../app/features/errorSlice";
 import { updatePost } from "../../app/features/postSlice";
 
 type Props = {
-  num: number
+  postId: number | undefined
 }
 
 
-const Post:React.FC<Props> = ({ num }) => {
+const Post:React.FC<Props> = ({ postId }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.user.user);
-  const posts = useAppSelector(state => state.post.posts);
-  const post = posts?.[num];
+  const posts = useAppSelector(state => state.posts.posts);
+  const post = posts?.find(({ id }) => id === postId);
   const currentTime = Math.round(new Date().getTime() / 1000);
   const postAgeInHours = Math.round(((currentTime - (post?.date_post_created ? post?.date_post_created : 0)) / 60) / 60);
 
 
   const refresh = async () => {
-    if (post?.id) dispatch(updatePost({ index: num, post: await getPostById(post?.id) }))
+    if (postId) dispatch(updatePost({ id: postId, post: await getPostById(postId) }))
   }
 
   const upvote = () => {
+    console.log(postId)
     Axios({
       method: "POST",
       withCredentials: true,
       data: {
         user_id: user?.id,
-        post_id: post?.id
+        post_id: postId
       },
       url: "http://localhost:4001/post/upvote"
     }).then((res) => refresh())
@@ -50,9 +51,25 @@ const Post:React.FC<Props> = ({ num }) => {
       withCredentials: true,
       data: {
         user_id: user?.id,
-        post_id: post?.id
+        post_id: postId
       },
       url: "http://localhost:4001/post/downvote"
+    }).then((res) => refresh())
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  }
+
+  const repost = () => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: {
+        user_id: user?.id,
+        post_id: postId
+      },
+      url: "http://localhost:4001/post/repost"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -67,7 +84,7 @@ const Post:React.FC<Props> = ({ num }) => {
         <span>@{post?.username}</span>
         <span>{postAgeInHours}h</span>
       </div>
-      <div onClick={() => navigate(`/post/${post?.id}`)}>
+      <div onClick={() => navigate(`/post/${postId}`)}>
         <p>{post?.text}</p>
         <figure>
         {
@@ -78,8 +95,8 @@ const Post:React.FC<Props> = ({ num }) => {
         </figure>
       </div>
       <div>
-        <button onClick={() => navigate(`/post/${post?.id}`)}><BiMessage />{post?.num_comments}</button>
-        <button><AiOutlineRetweet />{post?.num_reposts}</button>
+        <button onClick={() => navigate(`/post/${postId}`)}><BiMessage />{post?.num_comments}</button>
+        <button onClick={repost}><AiOutlineRetweet />{post?.num_reposts}</button>
         <button onClick={upvote}><BiUpvote />{post?.num_upvotes}</button>
         <button onClick={downvote}><BiDownvote />{post?.num_downvotes}</button>
         <button><RiBookmarkLine></RiBookmarkLine></button>

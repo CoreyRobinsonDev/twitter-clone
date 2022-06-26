@@ -18,7 +18,11 @@ const postSlice = createSlice({
       state.posts = payload;
     },
     updatePost: (state, { payload }) => {
-      if (state.posts) state.posts[payload.index] = payload.post;
+      if (!state.posts) return;
+
+      const index = state.posts.findIndex(post => post.id === payload.id);
+      
+      state.posts[index] = payload.post;
     }
   }
 });

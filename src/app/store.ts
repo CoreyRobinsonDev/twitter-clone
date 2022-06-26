@@ -8,8 +8,8 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
     error: errorReducer,
-    post: postReducer,
-    comment: commentReducer
+    posts: postReducer,
+    comments: commentReducer
   }
 })
 

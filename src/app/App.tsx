@@ -41,7 +41,7 @@ function App() {
   
   return <>
     <header>        
-      <h1>Bitter</h1>
+      <h1>Not Twitter</h1>
       <NavBar />
     </header>
     <main>

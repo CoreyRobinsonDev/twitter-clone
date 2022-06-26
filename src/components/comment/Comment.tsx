@@ -15,7 +15,7 @@ type Props = {
 
 const Comment: React.FC<Props> = ({ num }) => {
   const [data, setData] = useState<User | null>(null);
-  const comments = useAppSelector(state => state.comment.comments);
+  const comments = useAppSelector(state => state.comments.comments);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const comment = comments?.[num];
