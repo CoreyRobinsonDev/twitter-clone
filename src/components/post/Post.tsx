@@ -4,7 +4,7 @@ import { TiArrowUpOutline, TiArrowDownOutline, TiArrowUpThick, TiArrowDownThick 
 import { AiOutlineRetweet } from "react-icons/ai";
 import { RiBookmarkLine, RiBookmarkFill } from "react-icons/ri";
 import Axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { isVideo, getPostById } from "../../util/helper";
 import { useAppDispatch, useAppSelector } from "../../util/hooks";
@@ -24,15 +24,26 @@ const Post:React.FC<Props> = ({ postId }) => {
   const post = posts?.find(({ id }) => id === postId);
   const currentTime = Math.round(new Date().getTime() / 1000);
   const postAgeInHours = Math.round(((currentTime - (post?.date_post_created ? post?.date_post_created : 0)) / 60) / 60);
-  const [hasUpvoted, setHasUpvoted] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
-  const [hasDownvoted, setHasDownvoted] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
-  const [hasReposted, setHasReposted] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
-  const [hasBookmarked, setHasBookmarked] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
+  const upvotes = useAppSelector(state => state.posts.upvotes);
+  const downvotes = useAppSelector(state => state.posts.downvotes);
+  const reposts = useAppSelector(state => state.posts.reposts);
+  const bookmarks = useAppSelector(state => state.posts.bookmarks);
+  const [hasUpvoted, setHasUpvoted] = useState<boolean | null>();
+  const [hasDownvoted, setHasDownvoted] = useState<boolean | null>();
+  const [hasReposted, setHasReposted] = useState<boolean | null>();
+  const [hasBookmarked, setHasBookmarked] = useState<boolean | null>();
  
 
   const refresh = async () => {
     if (postId) dispatch(updatePost({ id: postId, post: await getPostById(postId) }))
   }
+
+  useEffect(() => {
+    setHasUpvoted(upvotes?.includes(postId ? postId : 0))
+    setHasDownvoted(downvotes?.includes(postId ? postId : 0))
+    setHasReposted(reposts?.includes(postId ? postId : 0))
+    setHasBookmarked(bookmarks?.includes(postId ? postId : 0))
+  },[bookmarks, reposts, downvotes, upvotes, postId])
 
   const upvote = () => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
@@ -87,6 +98,19 @@ const Post:React.FC<Props> = ({ postId }) => {
 
   const bookmark = () => {
     setHasBookmarked(!hasBookmarked);
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: {
+        user_id: user?.id,
+        post_id: postId
+      },
+      url: "http://localhost:4001/post/bookmark"
+    }).then((res) => refresh())
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
   }
 
   return <article>
