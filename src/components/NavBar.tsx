@@ -14,7 +14,7 @@ export default function NavBar() {
         <Link to="/notifications"><RiNotification2Line /></Link>    
         <Link to="/messages"><BiMessageSquare /></Link>    
         <Link to="/bookmarks"><RiBookmarkLine /></Link>    
-        <Link to="/profile"><CgProfile /></Link>    
+        <Link to={`/profile/${user.id}`}><CgProfile /></Link>    
         <Link to="/settings"><RiSettingsLine /></Link>    
       </>
       }

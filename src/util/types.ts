@@ -14,6 +14,7 @@ export type Post = {
 
 export type Post_db = {
   id: number,
+  poster_id: number,
   username: string,
   profile_photo: string,
   text: string,

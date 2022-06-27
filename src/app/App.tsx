@@ -12,12 +12,12 @@ import Explore from '../components/pages/Explore';
 import Messages from '../components/pages/Messages';
 import Notifs from '../components/pages/Notifs';
 import Bookmarks from '../components/pages/Bookmarks';
-import Profile from '../components/pages/Profile';
 import Settings from '../components/pages/Settings';
 import ErrorPage from '../components/pages/ErrorPage';
 import Login from '../components/pages/Login';
 import Register from '../components/pages/Register';
 import PostPage from '../components/pages/PostPage';
+import UserProfile from '../components/pages/UserProfile';
 
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   
+
   useEffect(() => {
     Axios({
       method: "GET",
@@ -37,7 +38,6 @@ function App() {
         navigate("*")
       })
   }, [dispatch, navigate])
-
   
   return <>
     <header>        
@@ -47,14 +47,14 @@ function App() {
     <main>
       <Routes>
         {user && <>
-            <Route path="/home" element={<Home />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/notifications" element={<Notifs />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/bookmarks" element={<Bookmarks />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />   
-            <Route path="/post/:postId" element={<PostPage />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/notifications" element={<Notifs />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/profile/:userId" element={<UserProfile/>} />
+          <Route path="/settings" element={<Settings />} />   
+          <Route path="/post/:postId" element={<PostPage />} />
           </>
         }
         <Route path="/register" element={<Register />} />   

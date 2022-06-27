@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BiMessage, BiUpvote, BiDownvote } from "react-icons/bi";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { RiBookmarkLine } from "react-icons/ri";
@@ -78,10 +78,10 @@ const Post:React.FC<Props> = ({ postId }) => {
   }
 
   return <article>
-    <img src={post?.profile_photo} alt="Profile" height="100" />
+    <img src={post?.profile_photo} alt="Profile" onClick={() => navigate(`/profile/${post?.poster_id}`)} height="100" />
     <div>
       <div>
-        <span>@{post?.username}</span>
+        <Link to={`/profile/${post?.poster_id}`}>@{post?.username}</Link>
         <span>{postAgeInHours}h</span>
       </div>
       <div onClick={() => navigate(`/post/${postId}`)}>
