@@ -41,7 +41,7 @@ function App() {
   
   return <>
     <header>        
-      <h1>Not Twitter</h1>
+      <h1>Not <s>Twitter</s></h1>
       <NavBar />
     </header>
     <main>

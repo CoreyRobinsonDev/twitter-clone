@@ -4,7 +4,7 @@ import Axios from "axios";
 
 import { useAppDispatch, useAppSelector } from "../../util/hooks";
 import { setError } from "../../app/features/errorSlice";
-import { setPosts } from "../../app/features/postSlice";
+import { setBookmarks, setPosts, setReposts, setUpvotes, setDownvotes } from "../../app/features/postSlice";
 import Post from "../post/Post";
 import CreatePost from "../post/CreatePost";
 
@@ -12,6 +12,7 @@ import CreatePost from "../post/CreatePost";
 const Home = () => {
   const [numOfPosts, setNumOfPosts] = useState(0);
   const posts = useAppSelector(state => state.posts.posts);
+  const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const feed = [];
@@ -31,7 +32,25 @@ const Home = () => {
         dispatch(setError(err.response.data))
         navigate("*")
       })
-    }, [navigate, dispatch])
+  }, [navigate, dispatch])
+
+
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { id: user?.id },
+      url: "http://localhost:4001/post/getAllPostInteractions"
+    }).then((res) => {
+      dispatch(setReposts(res.data.reposts));
+      dispatch(setUpvotes(res.data.upvotes));
+      dispatch(setDownvotes(res.data.downvotes));
+      dispatch(setBookmarks(res.data.bookmarks));
+    }).catch((err) => {
+      dispatch(setError(err.response.data));
+      navigate("*");
+    })
+  }, [user, navigate, dispatch])
     
   for (let i = 0; i < numOfPosts; i++) {
     const id = posts?.[i].id

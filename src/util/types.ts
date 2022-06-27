@@ -28,6 +28,31 @@ export type Post_db = {
 }
 
 
+export type Reposts = {
+  user_id: number,
+  post_id: number,
+  comment_id: number,
+  date_reposted: number
+}
+
+export type Bookmarks = {
+  user_id: number,
+  post_id: number,
+  comment_id: number,
+}
+
+export type Upvotes = {
+  user_id: number,
+  post_id: number,
+  comment_id: number,
+}
+
+export type Downvotes = {
+  user_id: number,
+  post_id: number,
+  comment_id: number,
+}
+
 
 export type Comment = {
   id: number,

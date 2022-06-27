@@ -1,8 +1,10 @@
 import { useNavigate, Link } from "react-router-dom";
-import { BiMessage, BiUpvote, BiDownvote } from "react-icons/bi";
+import { BiMessage } from "react-icons/bi";
+import { TiArrowUpOutline, TiArrowDownOutline, TiArrowUpThick, TiArrowDownThick } from "react-icons/ti";
 import { AiOutlineRetweet } from "react-icons/ai";
-import { RiBookmarkLine } from "react-icons/ri";
+import { RiBookmarkLine, RiBookmarkFill } from "react-icons/ri";
 import Axios from "axios";
+import { useState } from "react";
 
 import { isVideo, getPostById } from "../../util/helper";
 import { useAppDispatch, useAppSelector } from "../../util/hooks";
@@ -22,14 +24,18 @@ const Post:React.FC<Props> = ({ postId }) => {
   const post = posts?.find(({ id }) => id === postId);
   const currentTime = Math.round(new Date().getTime() / 1000);
   const postAgeInHours = Math.round(((currentTime - (post?.date_post_created ? post?.date_post_created : 0)) / 60) / 60);
-
+  const [hasUpvoted, setHasUpvoted] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
+  const [hasDownvoted, setHasDownvoted] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
+  const [hasReposted, setHasReposted] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
+  const [hasBookmarked, setHasBookmarked] = useState(useAppSelector(state => state.posts.upvotes)?.includes(postId ? postId : 0));
+ 
 
   const refresh = async () => {
     if (postId) dispatch(updatePost({ id: postId, post: await getPostById(postId) }))
   }
 
   const upvote = () => {
-    console.log(postId)
+    if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
     Axios({
       method: "POST",
       withCredentials: true,
@@ -46,6 +52,7 @@ const Post:React.FC<Props> = ({ postId }) => {
   }
 
   const downvote = () => {
+    if (!hasUpvoted) setHasDownvoted(!hasDownvoted);
     Axios({
       method: "POST",
       withCredentials: true,
@@ -62,6 +69,7 @@ const Post:React.FC<Props> = ({ postId }) => {
   }
 
   const repost = () => {
+    setHasReposted(!hasReposted);
     Axios({
       method: "POST",
       withCredentials: true,
@@ -75,6 +83,10 @@ const Post:React.FC<Props> = ({ postId }) => {
         dispatch(setError(err.response.data));
         navigate("*");
     })
+  }
+
+  const bookmark = () => {
+    setHasBookmarked(!hasBookmarked);
   }
 
   return <article>
@@ -97,9 +109,9 @@ const Post:React.FC<Props> = ({ postId }) => {
       <div>
         <button onClick={() => navigate(`/post/${postId}`)}><BiMessage />{post?.num_comments}</button>
         <button onClick={repost}><AiOutlineRetweet />{post?.num_reposts}</button>
-        <button onClick={upvote}><BiUpvote />{post?.num_upvotes}</button>
-        <button onClick={downvote}><BiDownvote />{post?.num_downvotes}</button>
-        <button><RiBookmarkLine></RiBookmarkLine></button>
+        <button onClick={upvote}>{hasUpvoted ? <TiArrowUpThick /> : <TiArrowUpOutline />}{post?.num_upvotes}</button>
+        <button onClick={downvote}>{hasDownvoted ? <TiArrowDownThick /> : <TiArrowDownOutline />}{post?.num_downvotes}</button>
+        <button onClick={bookmark}>{hasBookmarked ? <RiBookmarkFill/> : <RiBookmarkLine/>}</button>
       </div>
     </div>
   </article>

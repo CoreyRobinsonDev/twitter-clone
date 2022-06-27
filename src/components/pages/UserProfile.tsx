@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import { ImArrowLeft } from "react-icons/im";
 
 import { setError } from "../../app/features/errorSlice";
 import { useAppDispatch, useAppSelector } from "../../util/hooks";
@@ -28,7 +29,7 @@ const UserProfile = () => {
 
     return <>
     <div>
-      <Link to="/home">Back</Link>
+      <Link to="/home"><ImArrowLeft /></Link>
       <p>{user?.username}</p>
       <p>{user?.num_tweets}</p>
     </div>
@@ -37,7 +38,7 @@ const UserProfile = () => {
       <img src={user?.profile_photo} alt="Profile" />
         {loggedUser?.id === parseInt(userId ? userId : "")
           ? <button>Edit Profile</button>
-          : ""
+          : <button>Follow</button>
         }
       <p>{user?.bio}</p>
       <p>Joined {user?.date_acc_created}</p>
