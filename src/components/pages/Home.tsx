@@ -53,7 +53,7 @@ const Home = () => {
   }, [user, navigate, dispatch])
     
   for (let i = 0; i < numOfPosts; i++) {
-    const id = posts?.[i].id
+    const id = posts?.[i].id;
     feed.push(<Post key={i} postId={id} />)
   }
     

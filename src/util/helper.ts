@@ -1,6 +1,6 @@
 import { updatePost } from "../app/features/postSlice";
 import Axios from "axios";
-import { Post_db } from "./types";
+import { Post_db, Comment} from "./types";
 
 
 export const isGif = (media: string | undefined) => {
@@ -33,6 +33,15 @@ export const isURL = (media: string | undefined) => {
 export const getPostById = async (id: number) => {
 
   const result: Post_db | boolean = await Axios({ method: "POST", withCredentials: true, data: { id }, url: "http://localhost:4001/post/getPostData" })
+    .then((res) => res.data[0])
+    .catch((err) => false)  
+ 
+  return result;
+}
+
+export const getCommentById = async (id: number) => {
+
+  const result: Comment | boolean = await Axios({ method: "POST", withCredentials: true, data: { id }, url: "http://localhost:4001/comment/getCommentData" })
     .then((res) => res.data[0])
     .catch((err) => false)  
  

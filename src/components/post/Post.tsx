@@ -1,6 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 import { BiMessage } from "react-icons/bi";
-import { TiArrowUpOutline, TiArrowDownOutline, TiArrowUpThick, TiArrowDownThick } from "react-icons/ti";
+import { TiArrowUpOutline, TiArrowDownOutline , TiArrowUpThick, TiArrowDownThick} from "react-icons/ti";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { RiBookmarkLine, RiBookmarkFill } from "react-icons/ri";
 import Axios from "axios";
@@ -95,6 +95,7 @@ const Post:React.FC<Props> = ({ postId }) => {
         navigate("*");
     })
   }
+
 
   const bookmark = () => {
     setHasBookmarked(!hasBookmarked);
