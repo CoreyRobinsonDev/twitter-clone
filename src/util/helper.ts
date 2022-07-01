@@ -1,4 +1,3 @@
-import { updatePost } from "../app/features/postSlice";
 import Axios from "axios";
 import { Post_db, Comment} from "./types";
 

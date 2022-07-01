@@ -24,7 +24,8 @@ export type Post_db = {
   num_comments: number,
   num_upvotes: number,
   num_downvotes: number,
-  num_reposts: number
+  num_reposts: number,
+  repost: boolean
 }
 
 

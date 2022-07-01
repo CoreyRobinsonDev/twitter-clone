@@ -54,7 +54,7 @@ const Home = () => {
     
   for (let i = 0; i < numOfPosts; i++) {
     const id = posts?.[i].id;
-    feed.push(<Post key={i} postId={id} />)
+    feed.push(<Post key={i} postId={id} repost={posts?.[i].repost} />)
   }
     
   return <section>

@@ -4,15 +4,36 @@ import Axios from "axios";
 import { ImArrowLeft } from "react-icons/im";
 
 import { setError } from "../../app/features/errorSlice";
+import { setPosts, setReposts, setUpvotes, setDownvotes, setBookmarks } from "../../app/features/postSlice";
 import { useAppDispatch, useAppSelector } from "../../util/hooks";
 import { User } from "../../util/types";
+import Post from "../post/Post";
 
 const UserProfile = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [numOfPosts, setNumOfPosts] = useState(0);
   const loggedUser = useAppSelector(state => state.user.user);
+  const posts = useAppSelector(state => state.posts.posts);
   const { userId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const feed = [];
+
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: {id: userId},
+      url: "http://localhost:4001/post/getUserPosts"
+    }).then((res) => {
+      dispatch(setPosts(res.data));
+      setNumOfPosts(res.data.length);
+    })
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  }, [userId, dispatch, navigate])
 
   useEffect(() => {
     Axios({
@@ -26,6 +47,28 @@ const UserProfile = () => {
       navigate("*");
     })
   }, [dispatch, navigate, userId])
+
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { id: loggedUser?.id },
+      url: "http://localhost:4001/post/getAllPostInteractions"
+    }).then((res) => {
+      dispatch(setReposts(res.data.reposts));
+      dispatch(setUpvotes(res.data.upvotes));
+      dispatch(setDownvotes(res.data.downvotes));
+      dispatch(setBookmarks(res.data.bookmarks));
+    }).catch((err) => {
+      dispatch(setError(err.response.data));
+      navigate("*");
+    })
+  }, [loggedUser, navigate, dispatch])
+
+  for (let i = 0; i < numOfPosts; i++) {
+    const id = posts?.[i].id;
+    feed.push(<Post key={i} postId={id} repost={posts?.[i]?.repost} />)
+  }
 
     return <>
     <div>
@@ -46,6 +89,9 @@ const UserProfile = () => {
         <small>{user?.num_following} Following</small>
         <small>{user?.num_followers} Followers</small>
       </div>
+    </section>
+    <section>
+      {feed}  
     </section>
   </>
 }

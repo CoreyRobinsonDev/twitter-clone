@@ -12,11 +12,12 @@ import { setError } from "../../app/features/errorSlice";
 import { updatePost } from "../../app/features/postSlice";
 
 type Props = {
-  postId: number | undefined
+  postId: number | undefined,
+  repost: boolean | undefined
 }
 
 
-const Post:React.FC<Props> = ({ postId }) => {
+const Post:React.FC<Props> = ({ postId, repost }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.user.user);
@@ -79,7 +80,7 @@ const Post:React.FC<Props> = ({ postId }) => {
     })
   }
 
-  const repost = () => {
+  const repostFunc = () => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
@@ -115,11 +116,12 @@ const Post:React.FC<Props> = ({ postId }) => {
   }
 
   return <article>
+    <p>{repost ? <><AiOutlineRetweet /> Reposted</> : "" }</p>
     <img src={post?.profile_photo} alt="Profile" onClick={() => navigate(`/profile/${post?.poster_id}`)} height="100" />
     <div>
       <div>
         <Link to={`/profile/${post?.poster_id}`}>@{post?.username}</Link>
-        <span>{postAgeInHours}h</span>
+        <span>{post?.date_post_created ? postAgeInHours : ""}{post?.date_post_created ? "h" : ""}</span>
       </div>
       <div onClick={() => navigate(`/post/${postId}`)}>
         <p>{post?.text}</p>
@@ -133,7 +135,7 @@ const Post:React.FC<Props> = ({ postId }) => {
       </div>
       <div>
         <button onClick={() => navigate(`/post/${postId}`)}><BiMessage />{post?.num_comments}</button>
-        <button onClick={repost}><AiOutlineRetweet />{post?.num_reposts}</button>
+        <button onClick={repostFunc}><AiOutlineRetweet />{post?.num_reposts}</button>
         <button onClick={upvote}>{hasUpvoted ? <TiArrowUpThick /> : <TiArrowUpOutline />}{post?.num_upvotes}</button>
         <button onClick={downvote}>{hasDownvoted ? <TiArrowDownThick /> : <TiArrowDownOutline />}{post?.num_downvotes}</button>
         <button onClick={bookmark}>{hasBookmarked ? <RiBookmarkFill/> : <RiBookmarkLine/>}</button>
