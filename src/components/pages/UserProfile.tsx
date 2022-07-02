@@ -5,7 +5,7 @@ import { ImArrowLeft } from "react-icons/im";
 
 import { setError } from "../../app/features/errorSlice";
 import { setPosts, setReposts, setUpvotes, setDownvotes, setBookmarks } from "../../app/features/postSlice";
-import { setCommentsDownvotes, setCommentsReposts, setCommentsUpvotes } from "../../app/features/commentSlice";
+import { setComments, setCommentsDownvotes, setCommentsReposts, setCommentsUpvotes } from "../../app/features/commentSlice";
 import { useAppDispatch, useAppSelector } from "../../util/hooks";
 import { User } from "../../util/types";
 import Post from "../post/Post";
@@ -29,6 +29,7 @@ const UserProfile = () => {
       url: "http://localhost:4001/post/getUserPosts"
     }).then((res) => {
       dispatch(setPosts(res.data));
+      dispatch(setComments(res.data));
       setNumOfPosts(res.data.length);
     })
       .catch((err) => {

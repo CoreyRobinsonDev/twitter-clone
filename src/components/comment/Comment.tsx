@@ -8,7 +8,7 @@ import { isVideo, getCommentById } from "../../util/helper";
 import { useAppDispatch, useAppSelector } from "../../util/hooks";
 import { setError } from "../../app/features/errorSlice";
 import {updateComment} from "../../app/features/commentSlice";
-import { User } from "../../util/types";
+import { Link } from "react-router-dom";
 
 type Props = {
   commentId: number | undefined,
@@ -16,7 +16,6 @@ type Props = {
 }
 
 const Comment: React.FC<Props> = ({ commentId, repost }) => {
-  const [data, setData] = useState<User | null>(null);
   const comments = useAppSelector(state => state.comments.comments);
   const user = useAppSelector(state => state.user.user);
   const navigate = useNavigate();
@@ -29,19 +28,6 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
   const [hasDownvoted, setHasDownvoted] = useState<boolean | null>();
   const [hasReposted, setHasReposted] = useState<boolean | null>();
  
-
-  useEffect(() => {
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data: {user_id: comment?.poster_id},
-      url: "http://localhost:4001/user/getUserData"
-    }).then((res) => setData(res.data))
-      .catch((err) => {
-        dispatch(setError(err.response.data));
-        navigate("*");
-    })
-  }, [dispatch, navigate, comment])
 
 
   const refresh = async () => {
@@ -107,9 +93,9 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
 
   return <div>
     <p>{repost ? <><AiOutlineRetweet /> Reposted</> : "" }</p>
-    <img src={data?.profile_photo} alt="Profile" />
+    <img src={comment?.profile_photo} alt="Profile" onClick={() => navigate(`/profile/${comment?.poster_id}`)} />
     <div>
-      <span>@{data?.username}</span>
+      <Link to={`/profile/${comment?.poster_id}`}>@{comment?.username}</Link>
     </div>
     <div>
       <p>{comment?.text}</p>

@@ -121,7 +121,7 @@ const Post:React.FC<Props> = ({ postId, repost }) => {
     <div>
       <div>
         <Link to={`/profile/${post?.poster_id}`}>@{post?.username}</Link>
-        <span>{post?.date_post_created ? postAgeInHours : ""}{post?.date_post_created ? "h" : ""}</span>
+        <span>{postAgeInHours > 24 ? Math.floor(postAgeInHours / 24) : postAgeInHours}{postAgeInHours > 24 ? "d" : "h" }</span>
       </div>
       <div onClick={() => navigate(`/post/${postId}`)}>
         <p>{post?.text}</p>

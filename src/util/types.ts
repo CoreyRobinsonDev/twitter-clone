@@ -62,7 +62,9 @@ export type Comment = {
   media: string,
   num_upvotes: number,
   num_downvotes: number,
-  num_reposts: number
+  num_reposts: number,
+  username: string,
+  profile_photo: string
 }
 
 export type User = {
