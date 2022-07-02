@@ -11,10 +11,11 @@ import {updateComment} from "../../app/features/commentSlice";
 import { User } from "../../util/types";
 
 type Props = {
-  commentId: number | undefined
+  commentId: number | undefined,
+  repost: boolean | undefined
 }
 
-const Comment: React.FC<Props> = ({ commentId }) => {
+const Comment: React.FC<Props> = ({ commentId, repost }) => {
   const [data, setData] = useState<User | null>(null);
   const comments = useAppSelector(state => state.comments.comments);
   const user = useAppSelector(state => state.user.user);
@@ -87,7 +88,7 @@ const Comment: React.FC<Props> = ({ commentId }) => {
     })
   }
 
-  const repost = () => {
+  const repostFunc = () => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
@@ -105,6 +106,7 @@ const Comment: React.FC<Props> = ({ commentId }) => {
   }
 
   return <div>
+    <p>{repost ? <><AiOutlineRetweet /> Reposted</> : "" }</p>
     <img src={data?.profile_photo} alt="Profile" />
     <div>
       <span>@{data?.username}</span>
@@ -120,7 +122,7 @@ const Comment: React.FC<Props> = ({ commentId }) => {
       </figure>
     </div>
     <div>
-      <button onClick={repost}><AiOutlineRetweet />{comment?.num_reposts}</button>
+      <button onClick={repostFunc}><AiOutlineRetweet />{comment?.num_reposts}</button>
       <button onClick={upvote}>{hasUpvoted ? <TiArrowUpThick /> : <TiArrowUpOutline />}{comment?.num_upvotes}</button>
       <button onClick={downvote}>{hasDownvoted ? <TiArrowDownThick /> : <TiArrowDownOutline />}{comment?.num_downvotes}</button>
     </div>

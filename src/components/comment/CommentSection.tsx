@@ -54,8 +54,7 @@ const CommentSection = () => {
 
   for (let i = 0; i < numComments; i++) {
     const id = comments?.[i].id;
-    console.log(id);
-    section.push(<Comment key={i} commentId={id} />);
+    section.push(<Comment key={i} commentId={id} repost={undefined} />);
   }
   
   return <article>
