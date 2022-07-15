@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { useAppSelector } from "../../util/hooks";
+import { useAppSelector } from "../util/hooks";
 
 
 export default function ErrorPage() {

@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { ImArrowLeft } from "react-icons/im";
 
-import { setError } from "../../app/features/errorSlice";
-import { setPosts, setReposts, setUpvotes, setDownvotes, setBookmarks } from "../../app/features/postSlice";
-import { setComments, setCommentsDownvotes, setCommentsReposts, setCommentsUpvotes } from "../../app/features/commentSlice";
-import { setFollowers, setFollowing } from "../../app/features/userSlice";
-import { useAppDispatch, useAppSelector } from "../../util/hooks";
-import { User } from "../../util/types";
-import Post from "../post/Post";
-import Comment from "../comment/Comment";
+import { setError } from "../app/features/errorSlice";
+import { setPosts, setReposts, setUpvotes, setDownvotes, setBookmarks } from "../app/features/postSlice";
+import { setComments, setCommentsDownvotes, setCommentsReposts, setCommentsUpvotes } from "../app/features/commentSlice";
+import { setFollowers, setFollowing } from "../app/features/userSlice";
+import { useAppDispatch, useAppSelector } from "../util/hooks";
+import { User } from "../util/types";
+import Post from "./Post/Post";
+import Comment from "../components/comment/Comment";
 
 const UserProfile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -21,7 +21,7 @@ const UserProfile = () => {
   const posts = useAppSelector(state => state.posts.posts);
   const { userId } = useParams();
   const [isFollowing, setIsFollowing] = useState(followingList?.includes(userId ? parseInt(userId) : 0));
-  const [isFollower, setIsFollower] = useState(followerList?.includes(userId ? parseInt(userId) : 0));
+  const [isFollower] = useState(followerList?.includes(userId ? parseInt(userId) : 0));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const feed = [];
@@ -154,7 +154,7 @@ const UserProfile = () => {
     if (typeof posts?.[i].media_content_type === "undefined") {
       feed.push(<Comment key={i} commentId={id} repost={posts?.[i].repost} />)
     } else {
-      feed.push(<Post key={i} postId={id} repost={posts?.[i]?.repost} />)
+      feed.push(<Post key={i} postId={id}  />)
     }
   }
 

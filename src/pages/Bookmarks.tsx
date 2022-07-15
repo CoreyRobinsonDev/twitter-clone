@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import { setPosts } from "../../app/features/postSlice";
-import { setError } from "../../app/features/errorSlice";
-import { useAppDispatch, useAppSelector } from "../../util/hooks";
-import Post from "../post/Post";
+import { setPosts } from "../app/features/postSlice";
+import { setError } from "../app/features/errorSlice";
+import { useAppDispatch, useAppSelector } from "../util/hooks";
+import Post from "./Post/Post";
 
 const Bookmarks = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +31,7 @@ const Bookmarks = () => {
   
   for (let i = 0; i < numOfPosts; i++) {
     const id = posts?.[i].id;
-    feed.push(<Post key={i} postId={id} repost={posts?.[i].repost} />)
+    feed.push(<Post key={i} postId={id}  />)
   }
   return <section>
     {feed}

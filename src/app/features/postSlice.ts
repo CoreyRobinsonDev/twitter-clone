@@ -24,6 +24,9 @@ const postSlice = createSlice({
     setPosts: (state, { payload }) => {
       state.posts = payload;
     },
+    addPost: (state, { payload }) => {
+      state.posts?.push(payload);
+    },
     updatePost: (state, { payload }) => {
       if (!state.posts) return;
 
@@ -45,5 +48,5 @@ const postSlice = createSlice({
   }
 });
 
-export const { setPosts, updatePost, setBookmarks, setDownvotes, setReposts, setUpvotes } = postSlice.actions;
+export const { setPosts, updatePost, setBookmarks, setDownvotes, setReposts, setUpvotes, addPost } = postSlice.actions;
 export const postReducer = postSlice.reducer;

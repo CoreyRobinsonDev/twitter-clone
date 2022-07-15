@@ -4,20 +4,21 @@ import { useEffect } from 'react';
 import Axios from 'axios';
 
 import './App.css';
+import { setBookmarks, setPosts, setReposts, setUpvotes, setDownvotes } from "../app/features/postSlice";
 import { setUser } from './features/userSlice';
 import { setError } from './features/errorSlice';
 import NavBar from '../components/NavBar';
-import Home from '../components/pages/Home';
-import Explore from '../components/pages/Explore';
-import Messages from '../components/pages/Messages';
-import Notifs from '../components/pages/Notifs';
-import Bookmarks from '../components/pages/Bookmarks';
-import Settings from '../components/pages/Settings';
-import ErrorPage from '../components/pages/ErrorPage';
-import Login from '../components/pages/Login';
-import Register from '../components/pages/Register';
-import PostPage from '../components/pages/PostPage';
-import UserProfile from '../components/pages/UserProfile';
+import Home from '../pages/Home';
+import Explore from '../pages/Explore/Explore';
+import Messages from '../pages/Messages';
+import Notifs from '../pages/Notifs';
+import Bookmarks from '../pages/Bookmarks';
+import Settings from '../pages/Settings';
+import ErrorPage from '../pages/ErrorPage';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import PostPage from '../pages/Post/PostPage';
+import UserProfile from '../pages/UserProfile';
 
 
 function App() {
@@ -26,6 +27,39 @@ function App() {
   const dispatch = useAppDispatch();
 
   
+  useEffect(() => {
+    Axios({
+      method: "GET",
+      withCredentials: true,
+      url: "http://localhost:4001/"
+    })
+      .then((res) => {
+        dispatch(setPosts(res.data))
+      })
+      .catch((err) => {
+        dispatch(setError(err.response.data))
+        navigate("*")
+      })
+  }, [navigate, dispatch])
+
+
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { id: user?.id },
+      url: "http://localhost:4001/post/getAllPostInteractions"
+    }).then((res) => {
+      dispatch(setReposts(res.data.reposts));
+      dispatch(setUpvotes(res.data.upvotes));
+      dispatch(setDownvotes(res.data.downvotes));
+      dispatch(setBookmarks(res.data.bookmarks));
+    }).catch((err) => {
+      dispatch(setError(err.response.data));
+      navigate("*");
+    })
+  }, [user, navigate, dispatch])
+
 
   useEffect(() => {
     Axios({

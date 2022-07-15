@@ -1,30 +1,28 @@
-import { useNavigate, Link } from "react-router-dom";
-import { BiMessage } from "react-icons/bi";
 import { TiArrowUpOutline, TiArrowDownOutline , TiArrowUpThick, TiArrowDownThick} from "react-icons/ti";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { RiBookmarkLine, RiBookmarkFill } from "react-icons/ri";
+import { useNavigate, useParams } from "react-router-dom";
 import Axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { isVideo, getPostById } from "../../util/helper";
-import { useAppDispatch, useAppSelector } from "../../util/hooks";
 import { setError } from "../../app/features/errorSlice";
-import { updatePost } from "../../app/features/postSlice";
+import { isVideo } from "../../util/helper";
+import CreateComment from "../../components/comment/CreateComment";
+import CommentSection from "../../components/comment/CommentSection";
+import { useAppDispatch, useAppSelector } from "../../util/hooks";
+import { setReposts, setBookmarks, setUpvotes, setDownvotes } from "../../app/features/postSlice";
+import { Post_db } from "../../util/types";
 
-type Props = {
-  postId: number | undefined,
-  repost: boolean | undefined
-}
 
-
-const Post:React.FC<Props> = ({ postId, repost }) => {
+const PostPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.user.user);
-  const posts = useAppSelector(state => state.posts.posts);
-  const post = posts?.find(({ id }) => id === postId);
+  const { postId } = useParams();
+  const [post, setPost] = useState<Post_db | null>(null);
   const currentTime = Math.round(new Date().getTime() / 1000);
-  const postAgeInHours = Math.round(((currentTime - (post?.date_post_created ? post?.date_post_created : 0)) / 60) / 60);
+  const timestamp = post?.date_post_created ? post?.date_post_created : 0;
+  const postAgeInHours = Math.round(((currentTime - timestamp) / 60) / 60);
   const upvotes = useAppSelector(state => state.posts.upvotes);
   const downvotes = useAppSelector(state => state.posts.downvotes);
   const reposts = useAppSelector(state => state.posts.reposts);
@@ -33,18 +31,56 @@ const Post:React.FC<Props> = ({ postId, repost }) => {
   const [hasDownvoted, setHasDownvoted] = useState<boolean | null>();
   const [hasReposted, setHasReposted] = useState<boolean | null>();
   const [hasBookmarked, setHasBookmarked] = useState<boolean | null>();
- 
-
-  const refresh = async () => {
-    if (postId) dispatch(updatePost({ id: postId, post: await getPostById(postId) }))
-  }
 
   useEffect(() => {
-    setHasUpvoted(upvotes?.includes(postId ? postId : 0))
-    setHasDownvoted(downvotes?.includes(postId ? postId : 0))
-    setHasReposted(reposts?.includes(postId ? postId : 0))
-    setHasBookmarked(bookmarks?.includes(postId ? postId : 0))
-  },[bookmarks, reposts, downvotes, upvotes, postId])
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { id: user?.id },
+      url: "http://localhost:4001/post/getAllPostInteractions"
+    }).then((res) => {
+      dispatch(setReposts(res.data.reposts));
+      dispatch(setUpvotes(res.data.upvotes));
+      dispatch(setDownvotes(res.data.downvotes));
+      dispatch(setBookmarks(res.data.bookmarks));
+    }).catch((err) => {
+      dispatch(setError(err.response.data));
+      navigate("*");
+    })
+  }, [user, navigate, dispatch])
+  
+  useEffect(() => {
+    setHasUpvoted(upvotes?.includes(postId ? parseInt(postId) : 0))
+    setHasDownvoted(downvotes?.includes(postId ? parseInt(postId) : 0))
+    setHasReposted(reposts?.includes(postId ? parseInt(postId) : 0))
+    setHasBookmarked(bookmarks?.includes(postId ? parseInt(postId) : 0))
+  },[bookmarks, reposts, downvotes, upvotes, postId]) 
+  
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { id: postId },
+      url: "http://localhost:4001/post/getPostData"
+    }).then((res) => setPost(res.data[0]))
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  },[postId, dispatch, navigate])
+
+  const refresh = async () => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { id: postId },
+      url: "http://localhost:4001/post/getPostData"
+    }).then((res) => setPost(res.data[0]))
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  }
 
   const upvote = () => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
@@ -80,7 +116,7 @@ const Post:React.FC<Props> = ({ postId, repost }) => {
     })
   }
 
-  const repostFunc = () => {
+  const repost = () => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
@@ -96,7 +132,6 @@ const Post:React.FC<Props> = ({ postId, repost }) => {
         navigate("*");
     })
   }
-
 
   const bookmark = () => {
     setHasBookmarked(!hasBookmarked);
@@ -115,15 +150,14 @@ const Post:React.FC<Props> = ({ postId, repost }) => {
     })
   }
 
-  return <article>
-    <p>{repost ? <><AiOutlineRetweet /> Reposted</> : "" }</p>
-    <img src={post?.profile_photo} alt="Profile" onClick={() => navigate(`/profile/${post?.poster_id}`)} height="100" />
-    <div>
+  return <section>
+  <div>
+   <img src={post?.profile_photo} alt="Profile" height="100" />
       <div>
-        <Link to={`/profile/${post?.poster_id}`}>@{post?.username}</Link>
-        <span>{postAgeInHours > 24 ? Math.floor(postAgeInHours / 24) : postAgeInHours}{postAgeInHours > 24 ? "d" : "h" }</span>
+        <span>@{post?.username}</span>
+        <span>{postAgeInHours}h</span>
       </div>
-      <div onClick={() => navigate(`/post/${postId}`)}>
+      <div>
         <p>{post?.text}</p>
         <figure>
         {
@@ -133,15 +167,21 @@ const Post:React.FC<Props> = ({ postId, repost }) => {
         }
         </figure>
       </div>
+      <ul>
+       <li>{post?.num_reposts} Reposts</li> 
+       <li>{post?.num_upvotes} Upvotes</li> 
+       <li>{post?.num_downvotes} Downvotes</li> 
+      </ul>
       <div>
-        <button onClick={() => navigate(`/post/${postId}`)}><BiMessage />{post?.num_comments}</button>
-        <button onClick={repostFunc}><AiOutlineRetweet />{post?.num_reposts}</button>
+        <button onClick={repost}><AiOutlineRetweet />{post?.num_reposts}</button>
         <button onClick={upvote}>{hasUpvoted ? <TiArrowUpThick /> : <TiArrowUpOutline />}{post?.num_upvotes}</button>
         <button onClick={downvote}>{hasDownvoted ? <TiArrowDownThick /> : <TiArrowDownOutline />}{post?.num_downvotes}</button>
         <button onClick={bookmark}>{hasBookmarked ? <RiBookmarkFill/> : <RiBookmarkLine/>}</button>
       </div>
     </div>
-  </article>
+    <CreateComment />
+    <CommentSection />
+  </section>
 }
 
-export default Post;
+export default PostPage;
