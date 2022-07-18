@@ -15,12 +15,13 @@ const Register = () => {
     e.preventDefault();
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         username,
         password,
         confirmPassword
       },
-      url: "/register"
+      url: "https://not-twitter-crd.herokuapp.com/register"
     }).then((res) => navigate("/"))
       .catch((err) => {
       setAlert(err.response.data);

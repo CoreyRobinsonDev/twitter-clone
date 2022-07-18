@@ -42,11 +42,12 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         comment_id: commentId
       },
-      url: "/comment/upvote"
+      url: "https://not-twitter-crd.herokuapp.com/comment/upvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -58,11 +59,12 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
     if (!hasUpvoted) setHasDownvoted(!hasDownvoted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         comment_id: commentId
       },
-      url: "/comment/downvote"
+      url: "https://not-twitter-crd.herokuapp.com/comment/downvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -74,11 +76,12 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         comment_id: commentId
       },
-      url: "/comment/repost"
+      url: "https://not-twitter-crd.herokuapp.com/comment/repost"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));

@@ -17,7 +17,8 @@ const Bookmarks = () => {
   useEffect(() => {
     Axios({
       method: "GET",
-      url: "/bookmark"
+      withCredentials: true,
+      url: "https://not-twitter-crd.herokuapp.com/bookmark"
     }).then((res) => {
       dispatch(setPosts(res.data));
       setNumOfPosts(res.data.length);

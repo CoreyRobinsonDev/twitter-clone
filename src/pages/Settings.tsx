@@ -12,7 +12,8 @@ const Settings = () => {
   const logout = () => {
     Axios({
       method: "POST",
-      url: "/logout"
+      withCredentials: true,
+      url: "https://not-twitter-crd.herokuapp.com/logout"
     }).then((res) => {
       dispatch(setUser(null));
       navigate("/");

@@ -19,11 +19,12 @@ const Login = () => {
     
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         username,
         password
       },
-      url: "/login"})
+      url: "https://not-twitter-crd.herokuapp.com/login"})
     .then((res) => {
       dispatch(setUser(res.data));
       navigate("/home");

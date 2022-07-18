@@ -25,8 +25,9 @@ const CreateComment = () => {
 
     Axios({
       method: "POST",
+      withCredentials: true,
       data,
-      url: "/comment"
+      url: "https://not-twitter-crd.herokuapp.com/comment"
     })
       .catch((err) => {
         dispatch(setError(err.response.data));

@@ -21,10 +21,11 @@ const CommentSection = () => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         post_id: postId
       },
-      url: "/comment/getCommentSection"
+      url: "https://not-twitter-crd.herokuapp.com/comment/getCommentSection"
     }).then((res) => {
       setNumComments(res.data.length);
       dispatch(setComments(res.data))
@@ -38,8 +39,9 @@ const CommentSection = () => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { id: user?.id },
-      url: "/getAllCommentInteractions"
+      url: "https://not-twitter-crd.herokuapp.com/getAllCommentInteractions"
     }).then((res) => {
       dispatch(setCommentsReposts(res.data.reposts));
       dispatch(setCommentsUpvotes(res.data.upvotes));

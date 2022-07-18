@@ -20,7 +20,8 @@ const Home = () => {
   useEffect(() => {
     Axios({
       method: "GET",
-      url: "/"
+      withCredentials: true,
+      url: "https://not-twitter-crd.herokuapp.com/"
     })
       .then((res) => {
         setNumOfPosts(res.data.length);

@@ -27,8 +27,9 @@ const CreatePost = () => {
 
     Axios({
       method: "POST",
+      withCredentials: true,
       data,
-      url: "/post"
+      url: "https://not-twitter-crd.herokuapp.com/post"
     })
       .catch((err) => {
         dispatch(setError(err.response.data));

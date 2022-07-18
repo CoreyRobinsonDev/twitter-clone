@@ -42,7 +42,7 @@ const Post:React.FC<Props> = ({ postId }) => {
     Axios({
       method: "POST",
       data: { id: postId },
-      url: "/post/getPostData"
+      url: "https://not-twitter-crd.herokuapp.com/post/getPostData"
     }).then((res) => {
       setPost(res.data);
       dispatch(addPost(res.data))
@@ -67,7 +67,7 @@ const Post:React.FC<Props> = ({ postId }) => {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/upvote"
+      url: "https://not-twitter-crd.herokuapp.com/post/upvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -83,7 +83,7 @@ const Post:React.FC<Props> = ({ postId }) => {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/downvote"
+      url: "https://not-twitter-crd.herokuapp.com/post/downvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -99,7 +99,7 @@ const Post:React.FC<Props> = ({ postId }) => {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/repost"
+      url: "https://not-twitter-crd.herokuapp.com/post/repost"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -112,11 +112,12 @@ const Post:React.FC<Props> = ({ postId }) => {
     setHasBookmarked(!hasBookmarked);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/bookmark"
+      url: "https://not-twitter-crd.herokuapp.com/post/bookmark"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));

@@ -29,8 +29,9 @@ const UserProfile = () => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {id: userId},
-      url: "/post/getUserPosts"
+      url: "https://not-twitter-crd.herokuapp.com/post/getUserPosts"
     }).then((res) => {
       dispatch(setPosts(res.data));
       dispatch(setComments(res.data));
@@ -45,8 +46,9 @@ const UserProfile = () => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { user_id: userId },
-      url: "/user/getAllUserData"
+      url: "https://not-twitter-crd.herokuapp.com/user/getAllUserData"
     }).then((res) => setUser(res.data))
     .catch((err) => {
       dispatch(setError(err.response.data));
@@ -58,8 +60,9 @@ const UserProfile = () => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { id: loggedUser?.id },
-      url: "/comment/getAllCommentInteractions"
+      url: "https://not-twitter-crd.herokuapp.com/comment/getAllCommentInteractions"
     }).then((res) => {
       dispatch(setCommentsReposts(res.data.reposts));
       dispatch(setCommentsUpvotes(res.data.upvotes));
@@ -75,11 +78,12 @@ const UserProfile = () => {
     if (isFollowing) {
       Axios({
         method: "POST",
+      withCredentials: true,
         data: {
           user_id: userId,
           follower_id: loggedUser?.id
         },
-        url: "/user/unfollow"
+        url: "https://not-twitter-crd.herokuapp.com/user/unfollow"
       }).then((res) => setIsFollowing(!isFollowing))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -88,11 +92,12 @@ const UserProfile = () => {
     } else { 
       Axios({
         method: "POST",
+      withCredentials: true,
         data: {
           user_id: userId,
           follower_id: loggedUser?.id
         },
-        url: "/user/follow"
+        url: "https://not-twitter-crd.herokuapp.com/user/follow"
       }).then((res) => setIsFollowing(!isFollowing))
       .catch((err) => {
         dispatch(setError(err.response.data));

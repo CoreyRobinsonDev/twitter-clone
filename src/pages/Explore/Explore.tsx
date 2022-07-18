@@ -18,8 +18,9 @@ const Explore = () => {
 
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { username: query },
-      url: "/user/getIdByUsername"
+      url: "https://not-twitter-crd.herokuapp.com/user/getIdByUsername"
     }).then((res) => setUsersArr(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -28,8 +29,9 @@ const Explore = () => {
 
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { text: query },
-      url: "/post/getIdByText"
+      url: "https://not-twitter-crd.herokuapp.com/post/getIdByText"
     }).then((res) => setPostsArr(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));

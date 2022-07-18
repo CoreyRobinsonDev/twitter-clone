@@ -36,7 +36,7 @@ const PostPage = () => {
     Axios({
       method: "POST",
       data: { id: user?.id },
-      url: "/post/getAllPostInteractions"
+      url: "https://not-twitter-crd.herokuapp.com/post/getAllPostInteractions"
     }).then((res) => {
       dispatch(setReposts(res.data.reposts));
       dispatch(setUpvotes(res.data.upvotes));
@@ -59,7 +59,7 @@ const PostPage = () => {
     Axios({
       method: "POST",
       data: { id: postId },
-      url: "/post/getPostData"
+      url: "https://not-twitter-crd.herokuapp.com/post/getPostData"
     }).then((res) => setPost(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -71,7 +71,7 @@ const PostPage = () => {
     Axios({
       method: "POST",
       data: { id: postId },
-      url: "/post/getPostData"
+      url: "https://not-twitter-crd.herokuapp.com/post/getPostData"
     }).then((res) => setPost(res.data[0]))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -87,7 +87,7 @@ const PostPage = () => {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/upvote"
+      url: "https://not-twitter-crd.herokuapp.com/post/upvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -103,7 +103,7 @@ const PostPage = () => {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/downvote"
+      url: "https://not-twitter-crd.herokuapp.com/post/downvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -119,7 +119,7 @@ const PostPage = () => {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/repost"
+      url: "https://not-twitter-crd.herokuapp.com/post/repost"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -131,11 +131,12 @@ const PostPage = () => {
     setHasBookmarked(!hasBookmarked);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "/post/bookmark"
+      url: "https://not-twitter-crd.herokuapp.com/post/bookmark"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
