@@ -32,7 +32,7 @@ function App() {
     Axios({
       method: "GET",
       withCredentials: true,
-      url: "/"
+      url: "https://not-twitter-crd.herokuapp.com/"
     })
       .then((res) => {
         dispatch(setPosts(res.data))
