@@ -4,9 +4,8 @@ import Axios from "axios";
 import { ImArrowLeft } from "react-icons/im";
 
 import { setError } from "../app/features/errorSlice";
-import { setPosts, setReposts, setUpvotes, setDownvotes, setBookmarks } from "../app/features/postSlice";
+import { setPosts } from "../app/features/postSlice";
 import { setComments, setCommentsDownvotes, setCommentsReposts, setCommentsUpvotes } from "../app/features/commentSlice";
-import { setFollowers, setFollowing } from "../app/features/userSlice";
 import { useAppDispatch, useAppSelector } from "../util/hooks";
 import { User } from "../util/types";
 import Post from "./Post/Post";
@@ -57,22 +56,6 @@ const UserProfile = () => {
     })
   }, [dispatch, navigate, userId])
 
-  useEffect(() => {
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data: { id: loggedUser?.id },
-      url: "http://localhost:4001/post/getAllPostInteractions"
-    }).then((res) => {
-      dispatch(setReposts(res.data.reposts));
-      dispatch(setUpvotes(res.data.upvotes));
-      dispatch(setDownvotes(res.data.downvotes));
-      dispatch(setBookmarks(res.data.bookmarks));
-    }).catch((err) => {
-      dispatch(setError(err.response.data));
-      navigate("*");
-    })
-  }, [loggedUser, navigate, dispatch])
 
   useEffect(() => {
     Axios({
@@ -90,31 +73,6 @@ const UserProfile = () => {
     })
   }, [loggedUser, navigate, dispatch])
 
-  useEffect(() => {
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data: { user_id: loggedUser?.id },
-      url: "http://localhost:4001/user/getFollowers"
-    }).then((res) => dispatch(setFollowers(res.data)))
-      .catch((err) => {
-        dispatch(setError(err.response.data));
-        navigate("*");
-    })
-  }, [loggedUser, navigate, dispatch])
-
-  useEffect(() => {
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data: { follower_id: loggedUser?.id },
-      url: "http://localhost:4001/user/getFollowing"
-    }).then((res) => dispatch(setFollowing(res.data)))
-      .catch((err) => {
-        dispatch(setError(err.response.data));
-        navigate("*");
-    })
-  }, [loggedUser, navigate, dispatch])
 
   const follow = () => {
     if (isFollowing) {

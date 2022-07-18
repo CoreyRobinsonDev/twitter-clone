@@ -5,6 +5,7 @@ import Axios from 'axios';
 
 import './App.css';
 import { setBookmarks, setPosts, setReposts, setUpvotes, setDownvotes } from "../app/features/postSlice";
+import { setFollowers, setFollowing } from "../app/features/userSlice";
 import { setUser } from './features/userSlice';
 import { setError } from './features/errorSlice';
 import NavBar from '../components/NavBar';
@@ -72,6 +73,32 @@ function App() {
         navigate("*")
       })
   }, [dispatch, navigate])
+
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { user_id: user?.id },
+      url: "http://localhost:4001/user/getFollowers"
+    }).then((res) => dispatch(setFollowers(res.data)))
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  }, [user, navigate, dispatch])
+
+  useEffect(() => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      data: { follower_id: user?.id },
+      url: "http://localhost:4001/user/getFollowing"
+    }).then((res) => dispatch(setFollowing(res.data)))
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
+  }, [user, navigate, dispatch])
   
   return <>
     <header>        

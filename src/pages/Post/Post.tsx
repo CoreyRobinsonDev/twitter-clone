@@ -129,6 +129,7 @@ const Post:React.FC<Props> = ({ postId }) => {
     })
   }
 
+  
   return <article>
     <p>{hasReposted ? <><AiOutlineRetweet /> Reposted</> : "" }</p>
     <img src={post?.profile_photo} alt="Profile" onClick={() => navigate(`/profile/${post?.poster_id}`)} height="100" />

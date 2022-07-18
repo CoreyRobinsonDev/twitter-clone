@@ -1,10 +1,10 @@
 import Axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch } from "../../util/hooks";
 import { setError } from "../../app/features/errorSlice";
-import { User } from "../../util/types";
+import User  from "./User";
 import Post from "../Post/Post";
 
 const Explore = () => {
@@ -22,6 +22,10 @@ const Explore = () => {
       data: { username: query },
       url: "http://localhost:4001/user/getIdByUsername"
     }).then((res) => setUsersArr(res.data))
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
 
     Axios({
       method: "POST",
@@ -29,10 +33,14 @@ const Explore = () => {
       data: { text: query },
       url: "http://localhost:4001/post/getIdByText"
     }).then((res) => setPostsArr(res.data))
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+        navigate("*");
+    })
 
   }
 
-  console.log(postsArr)
+  
   return <section>
     <input type="text" onChange={(e) => search(e.target.value)} autoFocus />
     <ul>
@@ -43,6 +51,7 @@ const Explore = () => {
       <li><button>Entertainment</button></li>
     </ul>
     <div>
+      {usersArr?.map((userId, key) => <User key={key} userId={userId} />)}
       {postsArr?.map((postId, key) => <Post key={key} postId={postId} />)}
     </div>
   </section>
