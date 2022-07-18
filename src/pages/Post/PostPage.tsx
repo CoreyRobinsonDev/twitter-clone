@@ -62,7 +62,7 @@ const PostPage = () => {
       withCredentials: true,
       data: { id: postId },
       url: "http://localhost:4001/post/getPostData"
-    }).then((res) => setPost(res.data[0]))
+    }).then((res) => setPost(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));
         navigate("*");
@@ -155,7 +155,7 @@ const PostPage = () => {
    <img src={post?.profile_photo} alt="Profile" height="100" />
       <div>
         <span>@{post?.username}</span>
-        <span>{postAgeInHours}h</span>
+        <span>{postAgeInHours > 24 ? Math.floor(postAgeInHours / 24) : postAgeInHours}{postAgeInHours > 24 ? "d" : "h" }</span>
       </div>
       <div>
         <p>{post?.text}</p>
