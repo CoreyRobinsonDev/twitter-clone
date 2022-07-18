@@ -20,7 +20,6 @@ const Home = () => {
   useEffect(() => {
     Axios({
       method: "GET",
-      withCredentials: true,
       url: "http://localhost:4001/"
     })
       .then((res) => {
@@ -29,6 +28,7 @@ const Home = () => {
       })
       .catch((err) => {
         dispatch(setError(err.response.data))
+        navigate("*")
       })
     // adding numOfPosts as a dependency assures that setPosts is called on mount 
   }, [navigate, dispatch, numOfPosts])

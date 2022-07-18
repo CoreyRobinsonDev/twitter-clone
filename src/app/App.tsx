@@ -39,7 +39,7 @@ function App() {
       })
       .catch((err) => {
         dispatch(setError(err.response.data))
-        navigate("../anything")
+        navigate("*")
       })
   }, [navigate, dispatch])
 
@@ -57,6 +57,7 @@ function App() {
       dispatch(setBookmarks(res.data.bookmarks));
     }).catch((err) => {
       dispatch(setError(err.response.data));
+      navigate("*");
     })
   }, [user, navigate, dispatch])
 
@@ -69,6 +70,7 @@ function App() {
     }).then((res) => dispatch(setUser(res.data)))
       .catch((err) => {
         dispatch(setError(err.response.data))
+        navigate("*")
       })
   }, [dispatch, navigate])
 
@@ -81,6 +83,7 @@ function App() {
     }).then((res) => dispatch(setFollowers(res.data)))
       .catch((err) => {
         dispatch(setError(err.response.data));
+        navigate("*");
     })
   }, [user, navigate, dispatch])
 
@@ -93,6 +96,7 @@ function App() {
     }).then((res) => dispatch(setFollowing(res.data)))
       .catch((err) => {
         dispatch(setError(err.response.data));
+        navigate("*");
     })
   }, [user, navigate, dispatch])
   
