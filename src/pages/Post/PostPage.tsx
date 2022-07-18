@@ -58,6 +58,7 @@ const PostPage = () => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { id: postId },
       url: "https://not-twitter-crd.herokuapp.com/post/getPostData"
     }).then((res) => setPost(res.data))
@@ -70,6 +71,7 @@ const PostPage = () => {
   const refresh = async () => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { id: postId },
       url: "https://not-twitter-crd.herokuapp.com/post/getPostData"
     }).then((res) => setPost(res.data[0]))
@@ -83,6 +85,7 @@ const PostPage = () => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
@@ -99,6 +102,7 @@ const PostPage = () => {
     if (!hasUpvoted) setHasDownvoted(!hasDownvoted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
@@ -115,6 +119,7 @@ const PostPage = () => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId

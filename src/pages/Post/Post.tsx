@@ -41,6 +41,7 @@ const Post:React.FC<Props> = ({ postId }) => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { id: postId },
       url: "https://not-twitter-crd.herokuapp.com/post/getPostData"
     }).then((res) => {
@@ -63,6 +64,7 @@ const Post:React.FC<Props> = ({ postId }) => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
@@ -79,6 +81,7 @@ const Post:React.FC<Props> = ({ postId }) => {
     if (!hasUpvoted) setHasDownvoted(!hasDownvoted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
@@ -95,6 +98,7 @@ const Post:React.FC<Props> = ({ postId }) => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
+      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
