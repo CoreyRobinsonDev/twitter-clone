@@ -29,7 +29,6 @@ const Home = () => {
       })
       .catch((err) => {
         dispatch(setError(err.response.data))
-        navigate("*")
       })
     // adding numOfPosts as a dependency assures that setPosts is called on mount 
   }, [navigate, dispatch, numOfPosts])
