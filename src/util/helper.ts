@@ -31,7 +31,7 @@ export const isURL = (media: string | undefined) => {
 // returns false if post doesn't exist or server error
 export const getPostById = async (id: number) => {
 
-  const result: Post_db | boolean = await Axios({ method: "POST", withCredentials: true, data: { id }, url: "http://localhost:4001/post/getPostData" })
+  const result: Post_db | boolean = await Axios({ method: "POST", withCredentials: true, data: { id }, url: "https://not-twitter-crd.herokuapp.com/post/getPostData" })
     .then((res) => res.data[0])
     .catch((err) => false)  
  
@@ -40,7 +40,7 @@ export const getPostById = async (id: number) => {
 
 export const getCommentById = async (id: number) => {
 
-  const result: Comment | boolean = await Axios({ method: "POST", withCredentials: true, data: { id }, url: "http://localhost:4001/comment/getCommentData" })
+  const result: Comment | boolean = await Axios({ method: "POST", withCredentials: true, data: { id }, url: "https://not-twitter-crd.herokuapp.com/comment/getCommentData" })
     .then((res) => res.data[0])
     .catch((err) => false)  
  
