@@ -35,6 +35,7 @@ const PostPage = () => {
   useEffect(() => {
     Axios({
       method: "POST",
+      withCredentials: true,
       data: { id: user?.id },
       url: "https://not-twitter-crd.herokuapp.com/post/getAllPostInteractions"
     }).then((res) => {
