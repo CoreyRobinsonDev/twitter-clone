@@ -13,7 +13,8 @@ const CreatePost = () => {
   const [file, setFile] = useState<string | Blob>("");
 
 
-  const handleSubmit = () => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // A unary operator like plus triggers the valueOf method in the Date object
     // and it returns the timestamp (without any alteration).
     const date = Math.floor(+ new Date() / 1000).toString();
@@ -38,7 +39,7 @@ const CreatePost = () => {
   }
   return <div>
     <img src={user?.profile_photo} alt="" />
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <textarea onChange={(e) => setText(e.target.value)} value={text} />
       <div>
         <input type="file" accept="image/jpeg, image/png, image/webp, image/gif, video/mp4" onChange={(e) => setFile(e.target.files ? e.target.files[0]: "") }/>
