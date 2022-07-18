@@ -41,9 +41,8 @@ const Post:React.FC<Props> = ({ postId }) => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { id: postId },
-      url: "http://localhost:4001/post/getPostData"
+      url: "/post/getPostData"
     }).then((res) => {
       setPost(res.data);
       dispatch(addPost(res.data))
@@ -64,12 +63,11 @@ const Post:React.FC<Props> = ({ postId }) => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/upvote"
+      url: "/post/upvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -81,12 +79,11 @@ const Post:React.FC<Props> = ({ postId }) => {
     if (!hasUpvoted) setHasDownvoted(!hasDownvoted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/downvote"
+      url: "/post/downvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -98,12 +95,11 @@ const Post:React.FC<Props> = ({ postId }) => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/repost"
+      url: "/post/repost"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -116,12 +112,11 @@ const Post:React.FC<Props> = ({ postId }) => {
     setHasBookmarked(!hasBookmarked);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/bookmark"
+      url: "/post/bookmark"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));

@@ -29,9 +29,8 @@ const UserProfile = () => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {id: userId},
-      url: "http://localhost:4001/post/getUserPosts"
+      url: "/post/getUserPosts"
     }).then((res) => {
       dispatch(setPosts(res.data));
       dispatch(setComments(res.data));
@@ -46,9 +45,8 @@ const UserProfile = () => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { user_id: userId },
-      url: "http://localhost:4001/user/getAllUserData"
+      url: "/user/getAllUserData"
     }).then((res) => setUser(res.data))
     .catch((err) => {
       dispatch(setError(err.response.data));
@@ -60,9 +58,8 @@ const UserProfile = () => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { id: loggedUser?.id },
-      url: "http://localhost:4001/comment/getAllCommentInteractions"
+      url: "/comment/getAllCommentInteractions"
     }).then((res) => {
       dispatch(setCommentsReposts(res.data.reposts));
       dispatch(setCommentsUpvotes(res.data.upvotes));
@@ -78,12 +75,11 @@ const UserProfile = () => {
     if (isFollowing) {
       Axios({
         method: "POST",
-        withCredentials: true,
         data: {
           user_id: userId,
           follower_id: loggedUser?.id
         },
-        url: "http://localhost:4001/user/unfollow"
+        url: "/user/unfollow"
       }).then((res) => setIsFollowing(!isFollowing))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -92,12 +88,11 @@ const UserProfile = () => {
     } else { 
       Axios({
         method: "POST",
-        withCredentials: true,
         data: {
           user_id: userId,
           follower_id: loggedUser?.id
         },
-        url: "http://localhost:4001/user/follow"
+        url: "/user/follow"
       }).then((res) => setIsFollowing(!isFollowing))
       .catch((err) => {
         dispatch(setError(err.response.data));

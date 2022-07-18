@@ -19,12 +19,11 @@ const Login = () => {
     
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         username,
         password
       },
-      url: "http://localhost:4001/login"})
+      url: "/login"})
     .then((res) => {
       dispatch(setUser(res.data));
       navigate("/home");

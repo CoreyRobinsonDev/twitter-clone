@@ -32,7 +32,7 @@ function App() {
     Axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:4001/"
+      url: "/"
     })
       .then((res) => {
         dispatch(setPosts(res.data))
@@ -49,7 +49,7 @@ function App() {
       method: "POST",
       withCredentials: true,
       data: { id: user?.id },
-      url: "http://localhost:4001/post/getAllPostInteractions"
+      url: "/post/getAllPostInteractions"
     }).then((res) => {
       dispatch(setReposts(res.data.reposts));
       dispatch(setUpvotes(res.data.upvotes));
@@ -66,7 +66,7 @@ function App() {
     Axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:4001/user"
+      url: "/user"
     }).then((res) => dispatch(setUser(res.data)))
       .catch((err) => {
         dispatch(setError(err.response.data))
@@ -79,7 +79,7 @@ function App() {
       method: "POST",
       withCredentials: true,
       data: { user_id: user?.id },
-      url: "http://localhost:4001/user/getFollowers"
+      url: "/user/getFollowers"
     }).then((res) => dispatch(setFollowers(res.data)))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -92,7 +92,7 @@ function App() {
       method: "POST",
       withCredentials: true,
       data: { follower_id: user?.id },
-      url: "http://localhost:4001/user/getFollowing"
+      url: "/user/getFollowing"
     }).then((res) => dispatch(setFollowing(res.data)))
       .catch((err) => {
         dispatch(setError(err.response.data));

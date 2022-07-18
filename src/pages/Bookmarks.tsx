@@ -17,8 +17,7 @@ const Bookmarks = () => {
   useEffect(() => {
     Axios({
       method: "GET",
-      withCredentials: true,
-      url: "http://localhost:4001/bookmark/"
+      url: "/bookmark"
     }).then((res) => {
       dispatch(setPosts(res.data));
       setNumOfPosts(res.data.length);

@@ -27,9 +27,8 @@ const CreatePost = () => {
 
     Axios({
       method: "POST",
-      withCredentials: true,
       data,
-      url: "http://localhost:4001/post"
+      url: "/post"
     })
       .catch((err) => {
         dispatch(setError(err.response.data));

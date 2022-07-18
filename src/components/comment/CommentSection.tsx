@@ -21,11 +21,10 @@ const CommentSection = () => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         post_id: postId
       },
-      url: "http://localhost:4001/comment/getCommentSection"
+      url: "/comment/getCommentSection"
     }).then((res) => {
       setNumComments(res.data.length);
       dispatch(setComments(res.data))
@@ -39,9 +38,8 @@ const CommentSection = () => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { id: user?.id },
-      url: "http://localhost:4001/comment/getAllCommentInteractions"
+      url: "/getAllCommentInteractions"
     }).then((res) => {
       dispatch(setCommentsReposts(res.data.reposts));
       dispatch(setCommentsUpvotes(res.data.upvotes));

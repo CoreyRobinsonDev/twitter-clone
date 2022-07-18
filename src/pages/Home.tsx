@@ -20,7 +20,7 @@ const Home = () => {
   useEffect(() => {
     Axios({
       method: "GET",
-      url: "http://localhost:4001/"
+      url: "/"
     })
       .then((res) => {
         setNumOfPosts(res.data.length);

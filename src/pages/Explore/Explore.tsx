@@ -18,9 +18,8 @@ const Explore = () => {
 
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { username: query },
-      url: "http://localhost:4001/user/getIdByUsername"
+      url: "/user/getIdByUsername"
     }).then((res) => setUsersArr(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -29,9 +28,8 @@ const Explore = () => {
 
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { text: query },
-      url: "http://localhost:4001/post/getIdByText"
+      url: "/post/getIdByText"
     }).then((res) => setPostsArr(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));

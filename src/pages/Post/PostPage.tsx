@@ -35,9 +35,8 @@ const PostPage = () => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { id: user?.id },
-      url: "http://localhost:4001/post/getAllPostInteractions"
+      url: "/post/getAllPostInteractions"
     }).then((res) => {
       dispatch(setReposts(res.data.reposts));
       dispatch(setUpvotes(res.data.upvotes));
@@ -59,9 +58,8 @@ const PostPage = () => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { id: postId },
-      url: "http://localhost:4001/post/getPostData"
+      url: "/post/getPostData"
     }).then((res) => setPost(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -72,9 +70,8 @@ const PostPage = () => {
   const refresh = async () => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { id: postId },
-      url: "http://localhost:4001/post/getPostData"
+      url: "/post/getPostData"
     }).then((res) => setPost(res.data[0]))
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -86,12 +83,11 @@ const PostPage = () => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/upvote"
+      url: "/post/upvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -103,12 +99,11 @@ const PostPage = () => {
     if (!hasUpvoted) setHasDownvoted(!hasDownvoted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/downvote"
+      url: "/post/downvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -120,12 +115,11 @@ const PostPage = () => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/repost"
+      url: "/post/repost"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -137,12 +131,11 @@ const PostPage = () => {
     setHasBookmarked(!hasBookmarked);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         post_id: postId
       },
-      url: "http://localhost:4001/post/bookmark"
+      url: "/post/bookmark"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));

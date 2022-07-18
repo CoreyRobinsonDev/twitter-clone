@@ -12,8 +12,7 @@ const Settings = () => {
   const logout = () => {
     Axios({
       method: "POST",
-      withCredentials: true,
-      url: "http://localhost:4001/logout"
+      url: "/logout"
     }).then((res) => {
       dispatch(setUser(null));
       navigate("/");

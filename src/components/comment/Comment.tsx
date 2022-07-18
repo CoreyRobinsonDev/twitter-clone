@@ -28,8 +28,6 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
   const [hasDownvoted, setHasDownvoted] = useState<boolean | null>();
   const [hasReposted, setHasReposted] = useState<boolean | null>();
  
-
-
   const refresh = async () => {
     if (commentId) dispatch(updateComment({ id: commentId, comment: await getCommentById(commentId) }))
   }
@@ -44,12 +42,11 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
     if (!hasDownvoted) setHasUpvoted(!hasUpvoted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         comment_id: commentId
       },
-      url: "http://localhost:4001/comment/upvote"
+      url: "/comment/upvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -61,12 +58,11 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
     if (!hasUpvoted) setHasDownvoted(!hasDownvoted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         comment_id: commentId
       },
-      url: "http://localhost:4001/comment/downvote"
+      url: "/comment/downvote"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -78,12 +74,11 @@ const Comment: React.FC<Props> = ({ commentId, repost }) => {
     setHasReposted(!hasReposted);
     Axios({
       method: "POST",
-      withCredentials: true,
       data: {
         user_id: user?.id,
         comment_id: commentId
       },
-      url: "http://localhost:4001/comment/repost"
+      url: "/comment/repost"
     }).then((res) => refresh())
       .catch((err) => {
         dispatch(setError(err.response.data));

@@ -24,9 +24,8 @@ const User: React.FC<Props> = ({ userId }) => {
   useEffect(() => {
     Axios({
       method: "POST",
-      withCredentials: true,
       data: { user_id: userId },
-      url: "http://localhost:4001/user/getAllUserData"
+      url: "/user/getAllUserData"
     }).then((res) => setUser(res.data))
       .catch((err) => {
         dispatch(setError(err.response.data));

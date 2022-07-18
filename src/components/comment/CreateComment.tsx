@@ -25,9 +25,8 @@ const CreateComment = () => {
 
     Axios({
       method: "POST",
-      withCredentials: true,
       data,
-      url: "http://localhost:4001/comment"
+      url: "/comment"
     })
       .catch((err) => {
         dispatch(setError(err.response.data));

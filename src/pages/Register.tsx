@@ -20,8 +20,7 @@ const Register = () => {
         password,
         confirmPassword
       },
-      withCredentials: true,
-      url: "http://localhost:4001/register"
+      url: "/register"
     }).then((res) => navigate("/"))
       .catch((err) => {
       setAlert(err.response.data);
